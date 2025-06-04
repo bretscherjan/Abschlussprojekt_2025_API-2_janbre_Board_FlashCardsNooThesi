@@ -1,0 +1,33 @@
+[
+  {
+    "type": "card",
+    "fav": false,
+    "question": "Test",
+    "answer": "Test2"
+  },
+  {
+    "type": "card",
+    "fav": false,
+    "question": "For ",
+    "answer": "Zum "
+  },
+  {
+    "type": "quiz",
+    "fav": false,
+    "question": "Jetzt ",
+    "options": [
+      "TestT ",
+      "T es ",
+      "Ubicado ",
+      "Gib der denn "
+    ],
+    "correctAnswerIndex": 3
+  },
+  {
+    "type": "card",
+    "fav": false,
+    "question": "Through ",
+    "answer": "Just "
+  }
+]
+

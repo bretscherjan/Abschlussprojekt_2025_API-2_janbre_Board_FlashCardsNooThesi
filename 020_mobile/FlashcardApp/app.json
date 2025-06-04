@@ -1,0 +1,53 @@
+{
+  "expo": {
+    "jsEngine": "hermes",
+    "name": "FlashcardApp",
+    "slug": "FlashcardApp",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/noothesi-logo.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.NooThesi.flashcardapp",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/noothesi-logo.png",
+        "backgroundColor": "#2f2f2f"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/noothesi-logo.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/noothesi-logo.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#2f2f2f"
+        }
+      ],
+      "expo-font",
+      "expo-web-browser"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "d2cf5399-cd95-4488-9ccb-f679c669ba19"
+      }
+    }
+  }
+}

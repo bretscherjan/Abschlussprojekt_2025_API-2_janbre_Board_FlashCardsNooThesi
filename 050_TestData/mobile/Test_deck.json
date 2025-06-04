@@ -1,0 +1,80 @@
+{
+  "id": "1747210174297",
+  "title": "Test",
+  "alt": "Test",
+  "gradientColors": [
+    "rgba(33, 150, 243, 0.8)",
+    "rgba(0, 43, 78, 0.3)"
+  ],
+  "cards": [
+    {
+      "type": "card",
+      "fav": false,
+      "question": "Test",
+      "answer": "Test2"
+    },
+    {
+      "type": "card",
+      "fav": false,
+      "question": "For ",
+      "answer": "Zum "
+    },
+    {
+      "type": "card",
+      "fav": false,
+      "question": "Jim de ",
+      "answer": "Zürich de "
+    },
+    {
+      "type": "quiz",
+      "fav": false,
+      "question": "Jetzt ",
+      "options": [
+        "TestT ",
+        "T es ",
+        "Ubicado ",
+        "Gib der denn "
+      ],
+      "correctAnswerIndex": 3
+    },
+    {
+      "type": "quiz",
+      "fav": false,
+      "question": "Rhodes ",
+      "options": [
+        "Una cosa ",
+        "Zit für ",
+        "Tarde para ",
+        "Zijt "
+      ],
+      "correctAnswerIndex": 1
+    },
+    {
+      "type": "card",
+      "fav": false,
+      "question": "Through ",
+      "answer": "Just "
+    },
+    {
+      "type": "quiz",
+      "fav": false,
+      "question": "Zug ",
+      "options": [
+        "TestT ",
+        "Zahle ",
+        "HelloH ",
+        "HalloH "
+      ],
+      "correctAnswerIndex": 2
+    },
+    {
+      "type": "card",
+      "fav": false,
+      "question": "Thnbgtkmj",
+      "answer": "Rtj6ubnmo8"
+    }
+  ]
+}
+
+
+

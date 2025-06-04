@@ -1,0 +1,56 @@
+users
+	id		int
+	username	text
+	email		text
+	password	text
+	created_at	timestamp
+
+follows
+	follower_id	int
+	followed_id	int
+	created_at	timestamp
+
+collaborators
+	deck_id		int
+	user_id		int
+	can_edit	bool
+
+decks
+	id		int
+	title		text
+	alt		text
+	card_type	tinyInt
+	is_private	bool
+	creator_id	int
+	created_at	timestamp
+
+deck_colors
+	deck_id		int
+	start_color	text
+	end_color	text
+
+cards
+	id		int
+	deck_id		int
+	question	text
+	answer		text
+	is_fav		bool
+	status		ENUM('known', 'needs_practice')
+	created_at	timestamp
+
+quiz
+	id		int
+	deck_id		int
+	question	text
+	is_fav		bool
+	correct_answer	int4
+	status		ENUM('known', 'needs_practice')
+	created_at	timestamp
+
+quiz_options
+	quiz_id		int
+	first_option	text
+	second_option	text
+	third_option	text
+	fourth_option	text
+

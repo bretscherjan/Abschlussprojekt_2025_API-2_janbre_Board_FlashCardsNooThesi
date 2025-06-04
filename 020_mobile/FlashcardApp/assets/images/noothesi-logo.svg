@@ -1,0 +1,22 @@
+<svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- App icon background with rounded corners -->
+  <rect x="40" y="40" width="320" height="320" rx="60" fill="#2f2f2f" />
+  
+  <!-- Flash card representation -->
+  <rect x="120" y="110" width="140" height="180" rx="10" fill="#232323" />
+  <rect x="130" y="100" width="140" height="180" rx="10" fill="#333333" />
+  
+  <!-- Greek architectural column elements -->
+  <rect x="140" y="120" width="120" height="20" rx="2" fill="#dfaa30" />
+  <rect x="140" y="240" width="120" height="20" rx="2" fill="#dfaa30" />
+  
+  <!-- Greek "N" letter stylized -->
+  <path d="M150 155 L150 205 L170 155 L170 205" stroke="#dfaa30" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Greek-inspired brain icon -->
+  <path d="M205 180 C220 160, 240 170, 235 190 C250 190, 250 210, 235 210 C240 230, 220 240, 205 220 C190 240, 170 230, 175 210 C160 210, 160 190, 175 190 C170 170, 190 160, 205 180" stroke="#333333" stroke-width="3" fill="#dfaa30" />
+  
+  <!-- Text for the app name -->
+  <text x="200" y="300" font-family="Arial, sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="#dfaa30">NooThesi</text>
+  <text x="200" y="320" font-family="Arial, sans-serif" font-size="14" font-weight="normal" text-anchor="middle" fill="#aaaaaa">Νοοθέση</text>
+</svg>
