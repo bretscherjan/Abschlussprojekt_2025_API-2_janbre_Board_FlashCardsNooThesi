@@ -1,5 +1,1 @@
 connection via CMD to Herkules: mysql -u jan -h herkules.net.letsbuild.ch -p --ssl-verify-server-cert=FALSE
-
-drop database FlashCards;
-create database FlashCards;
-use FlashCards;
