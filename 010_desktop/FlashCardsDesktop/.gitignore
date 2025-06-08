@@ -1,0 +1,22 @@
+# Build files
+bin/
+obj/
+*.user
+*.suo
+
+# VS settings
+.vs/
+*.vcxproj.user
+*.csproj.user
+
+# Rider/Resharper
+.idea/
+*.DotSettings.user
+
+# NuGet
+*.nupkg
+packages/
+*.snupkg
+
+# Publish
+publish/
