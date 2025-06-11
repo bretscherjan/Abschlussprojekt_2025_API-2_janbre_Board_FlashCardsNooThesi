@@ -163,3 +163,42 @@ JOIN
 ORDER BY 
     deck_id, card_type;
 
+
+
+
+
+-- alle karten und quizze eines Decks anzeigen
+SELECT 
+    'card' AS type,
+    c.id,
+    c.question,
+    c.answer,
+    NULL AS correct_answer,
+    NULL AS first_option,
+    NULL AS second_option,
+    NULL AS third_option,
+    NULL AS fourth_option,
+    c.is_fav,
+    c.status,
+    c.created_at
+FROM cards c
+WHERE c.deck_id = 1
+
+UNION ALL
+
+SELECT 
+    'quiz' AS type,
+    q.id,
+    q.question,
+    NULL AS answer,
+    q.correct_answer,
+    qo.first_option,
+    qo.second_option,
+    qo.third_option,
+    qo.fourth_option,
+    q.is_fav,
+    q.status,
+    q.created_at
+FROM quiz q
+JOIN quiz_options qo ON q.id = qo.quiz_id
+WHERE q.deck_id = 1;
