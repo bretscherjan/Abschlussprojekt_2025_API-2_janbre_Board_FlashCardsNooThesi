@@ -1,9 +1,12 @@
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FlashCards.csproj.AssemblyReference.cache
+C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\Index.baml
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\MainWindow.baml
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\Create.baml
-C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\Deck.g.cs
+C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\Deck.baml
+C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\Index.g.cs
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\MainWindow.g.cs
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\Create.g.cs
+C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\Deck.g.cs
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\App.g.cs
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FlashCards_MarkupCompile.cache
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\bin\Debug\FlashCards.exe.config
@@ -11,7 +14,6 @@ C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCard
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\bin\Debug\FlashCards.pdb
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\bin\Debug\Newtonsoft.Json.dll
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\bin\Debug\Newtonsoft.Json.xml
-C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\Deck.baml
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FlashCards.g.resources
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FlashCards.Properties.Resources.resources
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FlashCards.csproj.GenerateResource.cache
@@ -20,4 +22,3 @@ C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCard
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FlashCards.exe
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FlashCards.pdb
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FlashCards.exe.config
-C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FlashCards_MarkupCompile.lref
