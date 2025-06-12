@@ -1,6 +1,6 @@
 <mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.9 Chrome/134.0.6998.205 Electron/35.4.0 Safari/537.36" version="27.0.9">
   <diagram name="Page-1" id="ozqfW-VLrdV21BE5dFM0">
-    <mxGraphModel dx="1883" dy="1264" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="1412" dy="948" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -780,16 +780,6 @@
         </mxCell>
         <mxCell id="fGjEsx-1ew5XHZKRS1k6-190" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;strokeColor=inherit;top=0;left=0;right=0;bottom=1;" parent="fGjEsx-1ew5XHZKRS1k6-197" vertex="1">
           <mxGeometry x="814.7629921259843" y="335.45454545454544" width="290.01574803149606" height="27.95454545454545" as="geometry" />
-        </mxCell>
-        <mxCell id="fGjEsx-1ew5XHZKRS1k6-191" value="PK" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;strokeColor=inherit;top=0;left=0;bottom=0;right=0;fontStyle=1;" parent="fGjEsx-1ew5XHZKRS1k6-190" vertex="1">
-          <mxGeometry width="27.188976377952756" height="27.95454545454545" as="geometry">
-            <mxRectangle width="30" height="30" as="alternateBounds" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="fGjEsx-1ew5XHZKRS1k6-192" value="deck_id bigint not null" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;align=left;strokeColor=inherit;top=0;left=0;bottom=0;right=0;spacingLeft=6;fontStyle=5;" parent="fGjEsx-1ew5XHZKRS1k6-190" vertex="1">
-          <mxGeometry x="27.188976377952756" width="262.82677165354335" height="27.95454545454545" as="geometry">
-            <mxRectangle width="290" height="30" as="alternateBounds" />
-          </mxGeometry>
         </mxCell>
         <mxCell id="fGjEsx-1ew5XHZKRS1k6-193" value="" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;strokeColor=inherit;top=0;left=0;right=0;bottom=1;" parent="fGjEsx-1ew5XHZKRS1k6-197" vertex="1">
           <mxGeometry x="814.7629921259843" y="698.8636363636364" width="290.01574803149606" height="27.95454545454545" as="geometry" />

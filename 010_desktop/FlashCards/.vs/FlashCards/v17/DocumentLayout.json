@@ -3,28 +3,28 @@
   "WorkspaceRootPath": "C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|c:\\daten\\020_zli\\010_projects\\abschlussprojekt_2025_api-2_janbre_board_flashcardsnoothesi\\010_desktop\\flashcards\\flashcards\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|solutionrelative:flashcards\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|c:\\daten\\020_zli\\010_projects\\abschlussprojekt_2025_api-2_janbre_board_flashcardsnoothesi\\010_desktop\\flashcards\\flashcards\\index.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|solutionrelative:flashcards\\index.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\flashcards\\sendrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|solutionrelative:flashcards\\sendrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|c:\\daten\\020_zli\\010_projects\\abschlussprojekt_2025_api-2_janbre_board_flashcardsnoothesi\\010_desktop\\flashcards\\flashcards\\deck.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\flashcards\\deck.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|solutionrelative:flashcards\\deck.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\flashcards\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|solutionrelative:flashcards\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\flashcards\\deck.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|solutionrelative:flashcards\\deck.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|c:\\daten\\020_zli\\010_projects\\abschlussprojekt_2025_api-2_janbre_board_flashcardsnoothesi\\010_desktop\\flashcards\\flashcards\\index.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|solutionrelative:flashcards\\index.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\flashcards\\gettoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|solutionrelative:flashcards\\gettoken.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|c:\\daten\\020_zli\\010_projects\\abschlussprojekt_2025_api-2_janbre_board_flashcardsnoothesi\\010_desktop\\flashcards\\flashcards\\deck.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|solutionrelative:flashcards\\deck.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{62B4D3DF-BD40-4857-A31D-B1FE72EDB477}|FlashCards\\FlashCards.csproj|C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\flashcards\\generatehash.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -38,11 +38,49 @@
       "DocumentGroups": [
         {
           "DockedHeight": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
+              "Title": "Index.xaml.cs",
+              "DocumentMoniker": "C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\FlashCards\\Index.xaml.cs",
+              "RelativeDocumentMoniker": "FlashCards\\Index.xaml.cs",
+              "ToolTip": "C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\FlashCards\\Index.xaml.cs",
+              "RelativeToolTip": "FlashCards\\Index.xaml.cs",
+              "ViewState": "AgIAAI0AAAAAAAAAAAAIwK0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-12T08:21:45.874Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Index.xaml",
+              "DocumentMoniker": "C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\FlashCards\\Index.xaml",
+              "RelativeDocumentMoniker": "FlashCards\\Index.xaml",
+              "ToolTip": "C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\FlashCards\\Index.xaml",
+              "RelativeToolTip": "FlashCards\\Index.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-06-12T08:21:06.271Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Deck.xaml.cs",
+              "DocumentMoniker": "C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\FlashCards\\Deck.xaml.cs",
+              "RelativeDocumentMoniker": "FlashCards\\Deck.xaml.cs",
+              "ToolTip": "C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\FlashCards\\Deck.xaml.cs",
+              "RelativeToolTip": "FlashCards\\Deck.xaml.cs",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAcwHAAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-11T14:32:49.851Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "Deck.xaml",
               "DocumentMoniker": "C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\FlashCards\\Deck.xaml",
               "RelativeDocumentMoniker": "FlashCards\\Deck.xaml",
@@ -54,51 +92,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Deck.xaml.cs",
-              "DocumentMoniker": "C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\FlashCards\\Deck.xaml.cs",
-              "RelativeDocumentMoniker": "FlashCards\\Deck.xaml.cs",
-              "ToolTip": "C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\FlashCards\\Deck.xaml.cs",
-              "RelativeToolTip": "FlashCards\\Deck.xaml.cs",
-              "ViewState": "AgIAACgAAAAAAAAAAAAIwEYAAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-11T14:32:49.851Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\FlashCards\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "FlashCards\\MainWindow.xaml",
-              "ToolTip": "C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\FlashCards\\MainWindow.xaml",
-              "RelativeToolTip": "FlashCards\\MainWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-06-09T11:05:36.664Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\FlashCards\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "FlashCards\\MainWindow.xaml.cs",
-              "ToolTip": "C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\FlashCards\\MainWindow.xaml.cs",
-              "RelativeToolTip": "FlashCards\\MainWindow.xaml.cs",
-              "ViewState": "AgIAAEQAAAAAAAAAAAA0wFQAAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-09T11:05:35.651Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "getToken.cs",
               "DocumentMoniker": "C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\FlashCards\\getToken.cs",
               "RelativeDocumentMoniker": "FlashCards\\getToken.cs",
               "ToolTip": "C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\FlashCards\\getToken.cs",
               "RelativeToolTip": "FlashCards\\getToken.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAbAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-09T11:52:01.321Z",
               "EditorCaption": ""
@@ -124,7 +124,7 @@
               "RelativeDocumentMoniker": "FlashCards\\sendRequest.cs",
               "ToolTip": "C:\\Daten\\020_ZLI\\010_projects\\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\\010_desktop\\FlashCards\\FlashCards\\sendRequest.cs",
               "RelativeToolTip": "FlashCards\\sendRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-09T12:44:44.568Z",
               "EditorCaption": ""

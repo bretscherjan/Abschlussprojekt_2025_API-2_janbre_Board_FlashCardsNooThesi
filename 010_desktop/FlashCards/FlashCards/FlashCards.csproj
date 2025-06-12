@@ -61,10 +61,17 @@
     <Compile Include="Create.xaml.cs">
       <DependentUpon>Create.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Index.xaml.cs">
+      <DependentUpon>Index.xaml</DependentUpon>
+    </Compile>
     <Compile Include="sendRequest.cs" />
     <Compile Include="Deck.xaml.cs">
       <DependentUpon>Deck.xaml</DependentUpon>
     </Compile>
+    <Page Include="Index.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

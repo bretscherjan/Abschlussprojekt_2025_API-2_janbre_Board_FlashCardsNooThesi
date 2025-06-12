@@ -1,0 +1,4 @@
+-- Design
+
+passe hier das farbtheme und weitere design an, dass es ansprechender aussieht. das ganze solllte auf den beiden farben #dfaa30, #2f2f2f basieren
+
