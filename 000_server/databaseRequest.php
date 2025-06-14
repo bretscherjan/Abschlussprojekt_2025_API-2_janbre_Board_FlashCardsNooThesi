@@ -14,6 +14,11 @@ $clientToken = $_GET['token'] ?? null;
 $sessionID = $_GET['sessionID'] ?? null;
 $deckId = $_GET['deckId'] ?? null;
 
+$startColor = $_GET['startColor'] ?? '#ffffff';
+$endColor = $_GET['endColor'] ?? '#000000';
+$title = $_GET['title'] ?? null;
+$alt = $_GET['alt'] ?? $title;
+
 $baseCode = '4gdrsh92z7';
 header('Content-Type: application/json');
 
@@ -103,6 +108,10 @@ if ($action === 'getData') {
 
         case 'deleteDeck':
             $result = deleteDeck($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $deckId);
+            break;
+
+        case 'addDeck':
+            $result = addDeck($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $startColor, $endColor, $title, $alt);
             break;
         
         default:
@@ -389,10 +398,42 @@ function deleteDeck($mysql_host, $mysql_user, $mysql_password, $mysql_database, 
 }
 
 
+//////////////////////////////////////////////////////////////////////
+/// function addDeck
+//////////////////////////////////////////////////////////////////////
 
+function addDeck($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $startColor, $endColor, $title, $alt) {
+    $dbh = createDatabaseConnection($mysql_host, $mysql_user, $mysql_password, $mysql_database, fopen('./log.txt', 'a'));
+    $error = null;
+    $deckId = null;
 
-
-
+    // Erste Transaktion: Deck erstellen
+    $sql1 = "INSERT INTO decks (title, alt, is_private, creator_id) VALUES (?, ?, FALSE, (SELECT id FROM users WHERE username = ?))";
+    $stmt1 = mysqli_prepare($dbh, $sql1);
+    
+    if ($stmt1 && mysqli_stmt_bind_param($stmt1, "sss", $title, $alt, $user) && mysqli_stmt_execute($stmt1)) {
+        $deckId = mysqli_insert_id($dbh);
+        mysqli_stmt_close($stmt1);
+        
+        // Zweite Transaktion: Farben hinzufügen
+        $sql2 = "INSERT INTO deck_colors (deck_id, start_color, end_color) VALUES (?, ?, ?)";
+        $stmt2 = mysqli_prepare($dbh, $sql2);
+        
+        if ($stmt2 && mysqli_stmt_bind_param($stmt2, "iss", $deckId, $start_color, $end_color) && mysqli_stmt_execute($stmt2)) {
+            mysqli_stmt_close($stmt2);
+        } else {
+            $error = 'Fehler beim Hinzufügen der Deck-Farben: ' . ($stmt2 ? mysqli_stmt_error($stmt2) : mysqli_error($dbh));
+        }
+    } else {
+        $error = 'Fehler beim Erstellen des Decks: ' . ($stmt1 ? mysqli_stmt_error($stmt1) : mysqli_error($dbh));
+    }
+    
+    mysqli_close($dbh);
+    
+    return $error 
+        ? ['error' => $error] 
+        : ['success' => true, 'deckId' => $deckId];
+}
 
 
 

@@ -88,6 +88,13 @@ namespace FlashCards
             }
         }
 
+        private void AddDeckButton_Click(object sender, RoutedEventArgs e)
+        {
+            var addDeckWindow = new CreateDeck(this.Left, this.Top, this.Width, this.Height, this.WindowState);
+            addDeckWindow.Show();
+            this.Close();
+        }
+
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
             var indexWindow = new Index(this.Left, this.Top, this.Width, this.Height, this.WindowState);

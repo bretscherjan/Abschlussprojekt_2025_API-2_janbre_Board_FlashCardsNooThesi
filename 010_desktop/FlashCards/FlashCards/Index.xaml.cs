@@ -180,7 +180,12 @@ namespace FlashCards
             }
         }
 
+        private void AddDeckButton_Click(object sender, RoutedEventArgs e)
+        {
+            var createDeckWindow = new CreateDeck(this.Left, this.Top, this.Width, this.Height, this.WindowState);
+            createDeckWindow.Show();
+            this.Close();
 
-
+        }
     }
 }
