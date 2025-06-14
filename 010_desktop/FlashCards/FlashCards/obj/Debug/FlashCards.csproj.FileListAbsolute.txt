@@ -25,6 +25,8 @@ C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCard
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\bin\Debug\WpfScreenHelper.pdb
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\CreateDeck.g.cs
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\CreateDeck.baml
-C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FlashCards.exe.config
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FlashCards_MarkupCompile.lref
+C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\AddCards.g.cs
+C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\AddCards.baml
+C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FlashCards.exe.config

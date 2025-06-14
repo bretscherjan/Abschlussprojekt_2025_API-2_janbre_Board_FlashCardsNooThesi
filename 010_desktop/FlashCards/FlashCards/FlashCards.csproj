@@ -64,6 +64,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddCards.xaml.cs">
+      <DependentUpon>AddCards.xaml</DependentUpon>
+    </Compile>
     <Compile Include="addDeck.cs" />
     <Compile Include="CreateDeck.xaml.cs">
       <DependentUpon>CreateDeck.xaml</DependentUpon>
@@ -71,10 +74,15 @@
     <Compile Include="Index.xaml.cs">
       <DependentUpon>Index.xaml</DependentUpon>
     </Compile>
+    <Compile Include="removeHashtagColor.cs" />
     <Compile Include="sendRequest.cs" />
     <Compile Include="Deck.xaml.cs">
       <DependentUpon>Deck.xaml</DependentUpon>
     </Compile>
+    <Page Include="AddCards.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="CreateDeck.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

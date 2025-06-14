@@ -90,7 +90,8 @@ namespace FlashCards
 
                 using (HttpClient requestClient = new HttpClient())
                 {
-                    var responseData = await addDeck.AddDeck(requestClient, "addDeck", _user, hashedToken, sessionID, FirstColor.ToString(), SecondColor.ToString(), title.Text, alt.Text);
+                    var responseData = await addDeck.AddDeck(requestClient, "addDeck", _user, hashedToken, sessionID, 
+                        removeHashtagColor.RemoveHashtagColor(FirstColor.ToString()), removeHashtagColor.RemoveHashtagColor(SecondColor.ToString()), title.Text, alt.Text);
 
                     Console.WriteLine(responseData.toString());
                 }
@@ -151,9 +152,9 @@ namespace FlashCards
         {
 
             createDeck();
-            // var createCard = new CreateCard(this.Left, this.Top, this.Width, this.Height, this.WindowState);
-            // createCard.Show();
-            // this.Close();
+            var createCard = new AddCards(this.Left, this.Top, this.Width, this.Height, this.WindowState);
+            createCard.Show();
+            this.Close();
         }
 
         private void goHome()
