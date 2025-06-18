@@ -153,7 +153,7 @@
 
                             <!-- Action Buttons -->
                             <StackPanel Grid.Row="5" Orientation="Vertical" Margin="0,20,0,0">
-                                <Button Content="CREATE DECK AND GO HOME"
+                                <Button Content="CREATE DECK"
                                     Background="#dfaa30"
                                     Foreground="#2f2f2f"
                                     FontSize="16"
@@ -167,27 +167,6 @@
                                             <Style.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
                                                     <Setter Property="Background" Value="#e8b43c"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
-
-                                <Button Content="CREATE DECK AND ADD CARDS"
-                                    Background="#3a3a3a"
-                                    Foreground="#dfaa30"
-                                    FontSize="16"
-                                    FontWeight="Bold"
-                                    Height="50"
-                                    BorderThickness="1"
-                                    BorderBrush="#555"
-                                    Click="CreateDeckAddCardsButton_Click">
-                                    <Button.Style>
-                                        <Style TargetType="Button">
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="#454545"/>
-                                                    <Setter Property="BorderBrush" Value="#dfaa30"/>
                                                 </Trigger>
                                             </Style.Triggers>
                                         </Style>

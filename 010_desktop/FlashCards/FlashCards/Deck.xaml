@@ -11,6 +11,7 @@
             <!-- Neue Row für Suchfeld -->
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <!-- Header mit Titel -->
@@ -22,33 +23,49 @@
                        HorizontalAlignment="Center"/>
         </Border>
 
-        <!-- Suchfeld -->
+        <!-- Suchfeld & Karten hinzufügen -->
         <Border Grid.Row="1" Background="#252525" Padding="10">
-            <StackPanel Orientation="Horizontal">
-                <TextBox x:Name="SearchBox" 
-                         Width="300" 
-                         Height="30"
-                         Margin="5"
-                         TextChanged="SearchBox_TextChanged"
-                         Background="#3f3f3f"
-                         Foreground="White"
-                         BorderBrush="#dfaa30"
-                         Padding="5"/>
-                <Button Content="Suchen" 
-                        Width="80" 
-                        Height="30"
-                        Margin="5"
-                        Click="SearchButton_Click"
-                        Background="#dfaa30"
-                        Foreground="White"/>
-                <Button Content="Zurücksetzen" 
-                        Width="80" 
-                        Height="30"
-                        Margin="5"
-                        Click="ResetButton_Click"
-                        Background="#dfaa30"
-                        Foreground="White"/>
-            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox x:Name="SearchBox" Grid.Column="0"
+                 Width="300"
+                 Height="30"
+                 Margin="5"
+                 TextChanged="SearchBox_TextChanged"
+                 Background="#3f3f3f"
+                 Foreground="White"
+                 BorderBrush="#dfaa30"
+                 Padding="5"/>
+                <Button Content="Suchen" Grid.Column="1"
+                Width="80"
+                Height="30"
+                Margin="5"
+                Click="SearchButton_Click"
+                Background="#dfaa30"
+                Foreground="White"/>
+                <Button Content="Zurücksetzen" Grid.Column="2"
+                Width="80"
+                Height="30"
+                Margin="5"
+                Click="ResetButton_Click"
+                Background="#dfaa30"
+                Foreground="White"/>
+                <Button Content="Karten hinzufügen" Grid.Column="4"
+                Width="120"
+                Height="30"
+                Margin="5"
+                Click="AddCardButton_Click"
+                HorizontalAlignment="Right"
+                Background="#dfaa30"
+                Foreground="White"/>
+            </Grid>
         </Border>
 
         <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Padding="5" Margin="0,0,0,20">
@@ -193,7 +210,10 @@
             </ItemsControl>
         </ScrollViewer>
         <Border Grid.Row="3" Background="#252525" Padding="10">
-            <Button x:Name="Back" Content="Back" Height="50" Click="BackButton_Click" Background="#dfaa30"/>
+            <Button x:Name="learn" Content="Learn this Deck" Background="#dfaa30" Foreground="#2f2f2f" FontSize="16" FontWeight="Bold" Height="50" BorderThickness="0"  Click="LearnButton_Click"/>
+        </Border>
+        <Border Grid.Row="4" Background="#252525" Padding="10">
+            <Button x:Name="Back" Content="Back" Click="BackButton_Click" Background="#3a3a3a" Foreground="#dfaa30" FontSize="16" FontWeight="Bold" Height="50" BorderThickness="1" BorderBrush="#555" />
         </Border>
     </Grid>
 </Window>

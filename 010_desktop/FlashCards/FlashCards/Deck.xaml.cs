@@ -88,10 +88,18 @@ namespace FlashCards
             }
         }
 
-        private void AddDeckButton_Click(object sender, RoutedEventArgs e)
+        private void AddCardButton_Click(object sender, RoutedEventArgs e)
         {
-            var addDeckWindow = new CreateDeck(this.Left, this.Top, this.Width, this.Height, this.WindowState);
-            addDeckWindow.Show();
+            var addCardWindow = new AddCards(this.Left, this.Top, this.Width, this.Height, this.WindowState, _deckId);
+            addCardWindow.Show();
+            this.Close();
+        }
+
+
+        private void LearnButton_Click(object sender, RoutedEventArgs e)
+        {
+            var learnWindow = new LearnDeck(this.Left, this.Top, this.Width, this.Height, this.WindowState, _deckId);
+            learnWindow.Show();
             this.Close();
         }
 
@@ -136,5 +144,6 @@ namespace FlashCards
             }
             this.DataContext = filteredCards;
         }
+
     }
 }
