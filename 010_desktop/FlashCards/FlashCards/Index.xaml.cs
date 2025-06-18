@@ -187,5 +187,17 @@ namespace FlashCards
             this.Close();
 
         }
+
+        /*private void EditDeck_Click(object sender, RoutedEventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+            var deckId = menuItem?.Tag?.ToString();
+            if (!string.IsNullOrEmpty(deckId))
+            {
+                var editDeckWindow = new EditDeck(this.Left, this.Top, this.Width, this.Height, this.WindowState, int.Parse(deckId));
+                editDeckWindow.Show();
+                this.Close();
+            }
+        }*/
     }
 }

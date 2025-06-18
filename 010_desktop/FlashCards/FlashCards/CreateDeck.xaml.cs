@@ -148,15 +148,6 @@ namespace FlashCards
             goHome();
         }
 
-        private void CreateDeckAddCardsButton_Click(object sender, RoutedEventArgs e)
-        {
-
-            createDeck();
-            var createCard = new AddCards(this.Left, this.Top, this.Width, this.Height, this.WindowState);
-            createCard.Show();
-            this.Close();
-        }
-
         private void goHome()
         {
             var indexWindow = new Index(this.Left, this.Top, this.Width, this.Height, this.WindowState);
