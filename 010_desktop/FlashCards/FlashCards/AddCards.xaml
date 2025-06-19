@@ -21,7 +21,7 @@
                         Background="#3a3a3a" Foreground="White" BorderBrush="#555" BorderThickness="1"
                         VerticalContentAlignment="Center" FontSize="14" />
 
-                    <Button Content="Remove Card" Click="RemoveCard_Click" Background="#ff4d4d" Foreground="#2f2f2f"
+                    <Button Cursor="Hand" Content="Remove Card" Click="RemoveCard_Click" Background="#ff4d4d" Foreground="#2f2f2f"
                         FontSize="16" FontWeight="Bold" Height="50" Margin="0,10,0,10" BorderThickness="0" />
                 </StackPanel>
             </Border>
@@ -62,7 +62,7 @@
                         Background="#3a3a3a" Foreground="White" BorderBrush="#555" BorderThickness="1"
                         VerticalContentAlignment="Center" FontSize="14" />
 
-                    <Button Content="Remove Quiz" Click="RemoveCard_Click" Background="#ff4d4d" Foreground="#2f2f2f"
+                    <Button Cursor="Hand" Content="Remove Quiz" Click="RemoveCard_Click" Background="#ff4d4d" Foreground="#2f2f2f"
                         FontSize="16" FontWeight="Bold" Height="50" Margin="0,10,0,10" BorderThickness="0" />
                 </StackPanel>
             </Border>
@@ -86,16 +86,16 @@
 
         <!-- Action Buttons -->
         <StackPanel Grid.Row="1" Orientation="Vertical" Margin="20,0,20,10">
-            <Button Content="Add a new Card" Background="#dfaa30" Foreground="#2f2f2f" FontSize="16" FontWeight="Bold"
+            <Button Cursor="Hand" Content="Add a new Card" Background="#dfaa30" Foreground="#2f2f2f" FontSize="16" FontWeight="Bold"
                 Height="50" Margin="0,0,0,10" BorderThickness="0" Click="CreateCardButton_Click" />
 
-            <Button Content="Add a new Quiz" Background="#dfaa30" Foreground="#2f2f2f" FontSize="16" FontWeight="Bold"
+            <Button Cursor="Hand" Content="Add a new Quiz" Background="#dfaa30" Foreground="#2f2f2f" FontSize="16" FontWeight="Bold"
                 Height="50" Margin="0,0,0,10" BorderThickness="0" Click="CreateQuizButton_Click" />
 
-            <Button Content="Save changes" Background="#3a3a3a" Foreground="#dfaa30" FontSize="16" FontWeight="Bold"
+            <Button Cursor="Hand" Content="Save changes" Background="#3a3a3a" Foreground="#dfaa30" FontSize="16" FontWeight="Bold"
                 Height="50" BorderThickness="1" BorderBrush="#555" Margin="0,0,0,10" Click="SaveChangesButton_Click" />
 
-            <Button Content="CANCEL" Background="Transparent" Foreground="#a0a0a0" FontSize="14" Height="40"
+            <Button Cursor="Hand" Content="CANCEL" Background="Transparent" Foreground="#a0a0a0" FontSize="14" Height="40"
                 BorderThickness="0" Click="BackButton_Click" />
         </StackPanel>
 

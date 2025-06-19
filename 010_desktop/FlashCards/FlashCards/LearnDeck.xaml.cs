@@ -3,34 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace FlashCards
 {
-
-
-    public class TypeConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            if (value == null || parameter == null) return Visibility.Collapsed;
-            string cardType = value.ToString();
-            string expectedType = parameter.ToString();
-            return cardType == expectedType ? Visibility.Visible : Visibility.Collapsed;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-
-
     public class Cards
     {
         public string title { get; set; }
@@ -50,53 +34,65 @@ namespace FlashCards
 
     public partial class LearnDeck : Window
     {
-        private readonly List<Cards> allCards;
-        private int currentCardIndex;
-        private readonly List<bool> results = new List<bool>();
-        private readonly int deckId;
-
-
         private string token;
         private string sessionID;
         private string hashedToken;
         private string _baseCode = "4gdrsh92z7";
         private string _user = "john_doe";
         private string _password = "password123";
+        private string _request = "getCards";
         private int _deckId;
+        private List<Cards> allCards;
+        private List<Cards> filteredCards;
 
 
-        public Cards CurrentCard { get; private set; }
-        public int CurrentCardDisplayIndex => currentCardIndex + 1;
-        public int TotalCards => allCards?.Count ?? 0;
+        private int currentCardIndex = 0;
+        private List<bool> results = new List<bool>();
+        private Cards currentCard => filteredCards[currentCardIndex];
 
         public LearnDeck(double left, double top, double width, double height, WindowState state, int deckId)
         {
             InitializeComponent();
-            this.deckId = deckId;
-            DataContext = this;
+
+            InitializeBasicUI();
+
+            LoadDataAndStartLearning();
 
             this.Left = left;
             this.Top = top;
             this.Width = width;
             this.Height = height;
             this.WindowState = state;
-
             _deckId = deckId;
 
-            allCards = LoadCards().Result;
-            if (allCards?.Count > 0)
+        }
+
+
+        private void InitializeBasicUI()
+        {
+            LearningPanel.Visibility = Visibility.Visible;
+            QuestionTextBlock.Text = "Lade Karten...";
+        }
+
+        private async void LoadDataAndStartLearning()
+        {
+            await getCards();
+
+            if (filteredCards?.Count > 0)
             {
-                CurrentCard = allCards[0];
+                LoadCurrentCard();
+            }
+            else
+            {
+                QuestionTextBlock.Text = "Keine Karten verfügbar";
             }
         }
 
-        private async Task<List<Cards>> LoadCards()
+
+        private async Task getCards()
         {
-
-
             try
             {
-
                 using (HttpClient tokenClient = new HttpClient())
                 {
                     var responseToken = await getToken.GetTokenAsync(tokenClient);
@@ -108,86 +104,135 @@ namespace FlashCards
                 hashedToken = generateHash.GenerateSHA256Hash(token, _baseCode, _password);
                 Console.WriteLine($"Hashed Token + baseCode + password: {hashedToken}");
 
-
                 using (HttpClient requestClient = new HttpClient())
                 {
-                    var responseData = await sendRequest.SendRequest(requestClient, "getCards", _user, hashedToken, sessionID, _deckId.ToString());
+                    var responseData = await sendRequest.SendRequest(requestClient, _request, _user, hashedToken, sessionID, _deckId.ToString());
 
-                    return JsonConvert.DeserializeObject<List<Cards>>(responseData.ToString());
+                    allCards = JsonConvert.DeserializeObject<List<Cards>>(responseData.ToString());
+                    filteredCards = new List<Cards>(allCards);
+                    this.DataContext = filteredCards;
                 }
-
-
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error loading cards: {ex.Message}");
-                return new List<Cards>();
+                Console.WriteLine($"Error: {ex.Message}");
             }
         }
 
-        private void SubmitButton_Click(object sender, RoutedEventArgs e)
+        private void LoadCurrentCard()
         {
-            bool isCorrect = CurrentCard.type == "card"
-                ? string.Equals(AnswerInput.Text?.Trim(), CurrentCard.answer?.Trim(), StringComparison.OrdinalIgnoreCase)
-                : GetSelectedOption() == CurrentCard.correct_answer;
+            if (filteredCards == null || filteredCards.Count == 0) return;
+
+            QuestionTextBlock.Text = currentCard.question;
+
+            if (currentCard.type == "card")
+            {
+                // Normale Karte
+                QuizOptionsPanel.Visibility = Visibility.Collapsed;
+                AnswerInputPanel.Visibility = Visibility.Visible;
+                AnswerTextBox.Text = "";
+            }
+            else if (currentCard.type == "quiz")
+            {
+                // Quiz-Karte
+                AnswerInputPanel.Visibility = Visibility.Collapsed;
+                QuizOptionsPanel.Visibility = Visibility.Visible;
+
+                // Setze die Quiz-Optionen
+                Option1Button.Content = currentCard.first_option;
+                Option2Button.Content = currentCard.second_option;
+                Option3Button.Content = currentCard.third_option;
+                Option4Button.Content = currentCard.fourth_option;
+
+                // Zurücksetzen der Auswahl
+                foreach (var child in QuizOptionsPanel.Children)
+                {
+                    if (child is Button button)
+                    {
+                        button.Background = new SolidColorBrush(Color.FromRgb(59, 59, 59));
+                    }
+                }
+            }
+
+            // Update Fortschrittsanzeige
+            ProgressTextBlock.Text = $"{currentCardIndex + 1} / {filteredCards.Count}";
+        }
+
+        private void CheckAnswer(string userAnswer)
+        {
+            bool isCorrect = false;
+
+            if (currentCard.type == "card")
+            {
+                isCorrect = userAnswer.Trim().Equals(currentCard.answer, StringComparison.OrdinalIgnoreCase);
+            }
+            else if (currentCard.type == "quiz")
+            {
+                int selectedOption = int.Parse(userAnswer);
+                isCorrect = selectedOption == currentCard.correct_answer;
+            }
 
             results.Add(isCorrect);
-            ShowFeedback(isCorrect);
 
-            if (currentCardIndex + 1 < allCards.Count)
+            if (currentCardIndex < filteredCards.Count - 1)
             {
-                ShowNextCard();
+                currentCardIndex++;
+                LoadCurrentCard();
             }
             else
             {
-                ShowResults();
+                ShowEvaluation();
             }
         }
 
-        private int GetSelectedOption()
+        private void ShowEvaluation()
         {
-            if (Option1.IsChecked == true) return 1;
-            if (Option2.IsChecked == true) return 2;
-            if (Option3.IsChecked == true) return 3;
-            return Option4.IsChecked == true ? 4 : 0;
-        }
-
-        private void ShowFeedback(bool isCorrect)
-        {
-            FeedbackText.Text = isCorrect ? "Correct!" : "Incorrect!";
-            FeedbackText.Foreground = isCorrect ? Brushes.Green : Brushes.Red;
-            FeedbackText.Visibility = Visibility.Visible;
-        }
-
-        private void ShowNextCard()
-        {
-            currentCardIndex++;
-            CurrentCard = allCards[currentCardIndex];
-            AnswerInput.Text = string.Empty;
-            FeedbackText.Visibility = Visibility.Collapsed;
-            ResetRadioButtons();
-        }
-
-        private void ResetRadioButtons()
-        {
-            Option1.IsChecked = false;
-            Option2.IsChecked = false;
-            Option3.IsChecked = false;
-            Option4.IsChecked = false;
-        }
-
-        private void ShowResults()
-        {
-            var auswertungWindow = new AuswertungLernen(this.Left, this.Top, this.Width, this.Height, this.WindowState, results);
+            // Übergibt die Ergebnisse UND die originalen Karten
+            var auswertungWindow = new AuswertungLernen(this.Left, this.Top, this.Width, this.Height, this.WindowState, results, filteredCards, _deckId);
             auswertungWindow.Show();
             this.Close();
         }
 
+        private void SubmitAnswerButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentCard.type == "card")
+            {
+                CheckAnswer(AnswerTextBox.Text);
+            }
+        }
+
+        private void QuizOptionButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = (Button)sender;
+            var optionNumber = int.Parse((string)button.Tag);
+
+            // Visuelles Feedback für die Auswahl
+            foreach (var child in QuizOptionsPanel.Children)
+            {
+                if (child is Button btn)
+                {
+                    btn.Background = new SolidColorBrush(Color.FromRgb(59, 59, 59));
+                }
+            }
+            button.Background = new SolidColorBrush(Color.FromRgb(223, 170, 48));
+
+            // Nach kurzer Verzögerung die Antwort überprüfen
+            var timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
+            timer.Tick += (s, args) =>
+            {
+                timer.Stop();
+                CheckAnswer(optionNumber.ToString());
+            };
+            timer.Start();
+        }
+
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            var deckWindow = new Deck(this.Left, this.Top, this.Width, this.Height, this.WindowState, deckId);
+            var deckWindow = new Deck(this.Left, this.Top, this.Width, this.Height, this.WindowState, _deckId);
             deckWindow.Show();
             this.Close();
         }
+
+
     }
 }

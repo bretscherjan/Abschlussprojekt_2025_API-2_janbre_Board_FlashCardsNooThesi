@@ -102,6 +102,8 @@
     <Compile Include="AuswertungLernen.xaml.cs">
       <DependentUpon>AuswertungLernen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BoolToResultTextConverter.cs" />
+    <Compile Include="Converters\ResultToColorConverter.cs" />
     <Compile Include="CreateDeck.xaml.cs">
       <DependentUpon>CreateDeck.xaml</DependentUpon>
     </Compile>

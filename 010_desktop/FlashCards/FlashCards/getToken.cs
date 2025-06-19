@@ -15,7 +15,7 @@ namespace FlashCards
 
         public getToken()
         {
-            // Constructor logic if needed
+
         }
 
         internal static async Task<dynamic> GetTokenAsync(HttpClient client)
