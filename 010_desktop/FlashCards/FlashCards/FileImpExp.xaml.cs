@@ -1,0 +1,155 @@
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
+
+namespace FlashCards
+{
+    public class CardsImpExp
+    {
+        public string title { get; set; }
+        public string type { get; set; }
+        public int? id { get; set; }
+        public string question { get; set; }
+        public string answer { get; set; }
+        public int? correct_answer { get; set; }
+        public string first_option { get; set; }
+        public string second_option { get; set; }
+        public string third_option { get; set; }
+        public string fourth_option { get; set; }
+        public int? is_fav { get; set; }
+        public string status { get; set; }
+        public string created_at { get; set; }
+    }
+
+    public partial class FileImpExp : Window
+    {
+        private string token;
+        private string sessionID;
+        private string hashedToken;
+        private string _baseCode = "4gdrsh92z7";
+        private string _user = "john_doe";
+        private string _password = "password123";
+        private string _request = "getCards";
+        private int _deckId;
+        private List<CardsImpExp> allCards;
+        private List<CardsImpExp> filteredCards;
+
+        public FileImpExp(double left, double top, double width, double height, WindowState state, int deckId)
+        {
+            InitializeComponent();
+            getCards();
+
+            this.Left = left;
+            this.Top = top;
+            this.Width = width;
+            this.Height = height;
+            this.WindowState = state;
+
+            _deckId = deckId;
+        }
+
+        private async void getCards()
+        {
+            try
+            {
+                using (HttpClient tokenClient = new HttpClient())
+                {
+                    var responseToken = await getToken.GetTokenAsync(tokenClient);
+                    token = responseToken.token;
+                    sessionID = responseToken.sessionID;
+                    Console.WriteLine($"Token: {token} \nSessionId: {sessionID}");
+                }
+
+                hashedToken = generateHash.GenerateSHA256Hash(token, _baseCode, _password);
+                Console.WriteLine($"Hashed Token + baseCode + password: {hashedToken}");
+
+                using (HttpClient requestClient = new HttpClient())
+                {
+                    var responseData = await sendRequest.SendRequest(requestClient, _request, _user, hashedToken, sessionID, _deckId.ToString());
+
+                    allCards = JsonConvert.DeserializeObject<List<CardsImpExp>>(responseData.ToString());
+                    filteredCards = new List<CardsImpExp>(allCards);
+                    this.DataContext = filteredCards;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        private void importCards()
+        {
+
+        }
+
+        private void exportCards()
+        {
+
+        }
+
+
+        private void ImportButton_Click(object sender, RoutedEventArgs e)
+        {
+            importCards();
+        }
+
+        private void ExportButton_Click(object sender, RoutedEventArgs e)
+        {
+            exportCards();
+        }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            var indexWindow = new Index(this.Left, this.Top, this.Width, this.Height, this.WindowState);
+            indexWindow.Show();
+            this.Close();
+        }
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            FilterCards();
+        }
+
+        private void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            FilterCards();
+        }
+
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            SearchBox.Text = string.Empty;
+            filteredCards = new List<CardsImpExp>(allCards);
+            this.DataContext = filteredCards;
+        }
+
+        private void FilterCards()
+        {
+            if (allCards == null) return;
+
+            string searchText = SearchBox.Text.Trim().ToLower();
+            if (string.IsNullOrEmpty(searchText))
+            {
+                filteredCards = new List<CardsImpExp>(allCards);
+            }
+            else
+            {
+                filteredCards = allCards
+                    .Where(card => card.question != null && card.question.ToLower().Contains(searchText))
+                    .ToList();
+            }
+            this.DataContext = filteredCards;
+        }
+
+    }
+}
