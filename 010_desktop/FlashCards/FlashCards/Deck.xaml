@@ -43,21 +43,21 @@
                  Foreground="White"
                  BorderBrush="#dfaa30"
                  Padding="5"/>
-                <Button Content="Suchen" Grid.Column="1"
+                <Button Cursor="Hand" Content="Suchen" Grid.Column="1"
                 Width="80"
                 Height="30"
                 Margin="5"
                 Click="SearchButton_Click"
                 Background="#dfaa30"
                 Foreground="White"/>
-                <Button Content="Zurücksetzen" Grid.Column="2"
+                <Button Cursor="Hand" Content="Zurücksetzen" Grid.Column="2"
                 Width="80"
                 Height="30"
                 Margin="5"
                 Click="ResetButton_Click"
                 Background="#dfaa30"
                 Foreground="White"/>
-                <Button Content="Karten hinzufügen" Grid.Column="4"
+                <Button Cursor="Hand" Content="Karten hinzufügen" Grid.Column="4"
                 Width="120"
                 Height="30"
                 Margin="5"
@@ -210,10 +210,10 @@
             </ItemsControl>
         </ScrollViewer>
         <Border Grid.Row="3" Background="#252525" Padding="10">
-            <Button x:Name="learn" Content="Learn this Deck" Background="#dfaa30" Foreground="#2f2f2f" FontSize="16" FontWeight="Bold" Height="50" BorderThickness="0"  Click="LearnButton_Click"/>
+            <Button Cursor="Hand" x:Name="learn" Content="Learn this Deck" Background="#dfaa30" Foreground="#2f2f2f" FontSize="16" FontWeight="Bold" Height="50" BorderThickness="0"  Click="LearnButton_Click"/>
         </Border>
         <Border Grid.Row="4" Background="#252525" Padding="10">
-            <Button x:Name="Back" Content="Back" Click="BackButton_Click" Background="#3a3a3a" Foreground="#dfaa30" FontSize="16" FontWeight="Bold" Height="50" BorderThickness="1" BorderBrush="#555" />
+            <Button Cursor="Hand" x:Name="Back" Content="Back" Click="BackButton_Click" Background="#3a3a3a" Foreground="#dfaa30" FontSize="16" FontWeight="Bold" Height="50" BorderThickness="1" BorderBrush="#555" />
         </Border>
     </Grid>
 </Window>

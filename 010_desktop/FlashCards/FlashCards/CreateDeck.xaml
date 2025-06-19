@@ -128,7 +128,7 @@
                                        FontSize="16"
                                        VerticalAlignment="Center"/>
 
-                                <Button Content="Choose first color" 
+                                <Button Cursor="Hand" Content="Choose first color" 
                                     Width="120" 
                                     Height="30" 
                                     Margin="15,0,0,0" 
@@ -139,7 +139,7 @@
                                     BorderThickness="0"/>
                                 <Rectangle Fill="{Binding FirstColor, Converter={StaticResource ColorToBrushConverter}}" Width="20" Height="20" Margin="5"/>
 
-                                <Button Content="Choose second color" 
+                                <Button Cursor="Hand" Content="Choose second color" 
                                     Width="120" 
                                     Height="30" 
                                     Margin="15,0,0,0" 
@@ -153,7 +153,7 @@
 
                             <!-- Action Buttons -->
                             <StackPanel Grid.Row="5" Orientation="Vertical" Margin="0,20,0,0">
-                                <Button Content="CREATE DECK"
+                                <Button Cursor="Hand" Content="CREATE DECK"
                                     Background="#dfaa30"
                                     Foreground="#2f2f2f"
                                     FontSize="16"
@@ -173,7 +173,7 @@
                                     </Button.Style>
                                 </Button>
 
-                                <Button Content="CANCEL"
+                                <Button Cursor="Hand" Content="CANCEL"
                                     Background="Transparent"
                                     Foreground="#a0a0a0"
                                     FontSize="14"

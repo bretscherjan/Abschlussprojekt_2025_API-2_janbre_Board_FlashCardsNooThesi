@@ -21,27 +21,52 @@
                        HorizontalAlignment="Center"/>
         </Border>
 
-        <!-- Results -->
-        <StackPanel Grid.Row="1" Margin="20" VerticalAlignment="Center">
-            <TextBlock Text="{Binding CorrectCount, StringFormat='Correct Answers: {0}'}" 
-                       FontSize="18" 
-                       FontWeight="Bold" 
-                       Foreground="#dfaa30"
-                       Margin="0,0,0,10"/>
-            <TextBlock Text="{Binding IncorrectCount, StringFormat='Incorrect Answers: {0}'}" 
-                       FontSize="18" 
-                       FontWeight="Bold" 
-                       Foreground="#dfaa30"
-                       Margin="0,0,0,10"/>
-            <TextBlock Text="{Binding Percentage, StringFormat='Percentage: {0:F2}%'}" 
-                       FontSize="18" 
-                       FontWeight="Bold" 
-                       Foreground="#dfaa30"/>
-        </StackPanel>
+        <!-- Ersetzen Sie den StackPanel, der die Ergebnisse enthält, durch ein Grid -->
+        <Grid Grid.Row="1" Margin="20,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Statistik -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,20">
+                <TextBlock Text="{Binding CorrectCount, StringFormat='Richtig: {0}'}" 
+                 Foreground="#4CAF50" FontSize="18" FontWeight="Bold"/>
+                <TextBlock Text="{Binding IncorrectCount, StringFormat='Falsch: {0}'}" 
+                 Foreground="#F44336" FontSize="18" FontWeight="Bold"/>
+                <TextBlock Text="{Binding Percentage, StringFormat='Erfolgsquote: {0:F2}%'}" 
+                 FontSize="18" FontWeight="Bold" Foreground="#dfaa30"/>
+            </StackPanel>
+
+            <!-- Detailierte Auswertung -->
+            <Border Grid.Row="1" BorderBrush="#555" BorderThickness="0,1" Padding="0,10">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl ItemsSource="{Binding CardResults}" Padding="5">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="0,5" Padding="10" Background="#252525" 
+                                CornerRadius="4" BorderThickness="1" 
+                                BorderBrush="{Binding WasCorrect, Converter={StaticResource ResultToColorConverter}}">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Question}" 
+                                         FontWeight="Bold" Foreground="#e0e0e0"/>
+                                        <TextBlock Text="{Binding CorrectAnswer, StringFormat='Richtige Antwort: {0}'}" 
+                                         Margin="0,5" Foreground="#a0a0a0"/>
+                                        <TextBlock Text="{Binding WasCorrect, Converter={StaticResource BoolToResultTextConverter}}" 
+                                         FontWeight="Bold" Margin="0,5,0,0"
+                                         HorizontalAlignment="Right"/>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </ScrollViewer>
+            </Border>
+        </Grid>
 
         <!-- Back Button -->
-        <Border Grid.Row="2" Background="#252525" Padding="10">
-            <Button Content="Back to Deck" 
+        <Border Grid.Row="3" Background="#252525" Padding="10">
+            <Button Cursor="Hand" Content="Back to Deck" 
                     Background="#dfaa30" 
                     Foreground="#2f2f2f" 
                     FontSize="16" 
