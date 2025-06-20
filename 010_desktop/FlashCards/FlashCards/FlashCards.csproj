@@ -113,6 +113,7 @@
     <Compile Include="Index.xaml.cs">
       <DependentUpon>Index.xaml</DependentUpon>
     </Compile>
+    <Compile Include="jsonConverter.cs" />
     <Compile Include="LearnDeck.xaml.cs">
       <DependentUpon>LearnDeck.xaml</DependentUpon>
     </Compile>

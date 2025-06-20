@@ -1,0 +1,60 @@
+{
+  "normalCards": [
+    {
+      "question": "Test",
+      "answer": "Test2",
+      "is_fav": false,
+      "status": "needs_practice"
+    },
+    {
+      "question": "For",
+      "answer": "Zum",
+      "is_fav": false,
+      "status": "needs_practice"
+    },
+    {
+      "question": "Through",
+      "answer": "Just",
+      "is_fav": false,
+      "status": "needs_practice"
+    },
+    {
+      "question": "Thnbgtkmj",
+      "answer": "Rtj6ubnmo8",
+      "is_fav": false,
+      "status": "needs_practice"
+    }
+  ],
+  "quizCards": [
+    {
+      "question": "Jetzt",
+      "option1": "TestT",
+      "option2": "T es",
+      "option3": "Ubicado",
+      "option4": "Gib der denn",
+      "correctIndex": 3,
+      "is_fav": false,
+      "status": "needs_practice"
+    },
+    {
+      "question": "Rhodes",
+      "option1": "Una cosa",
+      "option2": "Zit f\u00FCr",
+      "option3": "Tarde para",
+      "option4": "Zijt",
+      "correctIndex": 1,
+      "is_fav": false,
+      "status": "needs_practice"
+    },
+    {
+      "question": "Zug",
+      "option1": "TestT",
+      "option2": "Zahle",
+      "option3": "HelloH",
+      "option4": "HalloH",
+      "correctIndex": 2,
+      "is_fav": false,
+      "status": "needs_practice"
+    }
+  ]
+}

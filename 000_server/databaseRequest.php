@@ -115,8 +115,13 @@ if ($action === 'getData') {
             break;
         
         case 'addCards':
-            $result = addCards($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $deckId, $fh);
+            $result = addCards($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $deckId, $requestMessage, $fh);
             break;
+
+        case 'importCards':
+            $result = addCards($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $deckId, $requestMessage, $fh);
+            break;
+
         default:
             fwrite($fh, date(DATE_RFC2822) . " : Unbekannte Anfrage : " . $_SERVER['HTTP_CLIENT_IP'] . "\n");
             echo json_encode(['error' => 'Unbekannte Anfrage']);
@@ -418,7 +423,7 @@ function addDeck($mysql_host, $mysql_user, $mysql_password, $mysql_database, $us
 // function addCards
 //////////////////////////////////////////////////////////////////////
 
-function addCards($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $deckId, $fh) {
+function addCards($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $deckId, $requestMessage, $fh) {
     $dbh = createDatabaseConnection($mysql_host, $mysql_user, $mysql_password, $mysql_database, $fh);
     $error = null;
 
@@ -437,16 +442,19 @@ function addCards($mysql_host, $mysql_user, $mysql_password, $mysql_database, $u
 
     try {
 
-        $sql = "DELETE FROM cards WHERE deck_id = ?";
-        $stmt = mysqli_prepare($dbh, $sql);
-        mysqli_stmt_bind_param($stmt, "i", $deckId);
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_close($stmt);
-        $sql = "DELETE FROM quiz WHERE deck_id = ?";
-        $stmt = mysqli_prepare($dbh, $sql);
-        mysqli_stmt_bind_param($stmt, "i", $deckId);
-        mysqli_stmt_execute($stmt);
-        mysqli_stmt_close($stmt);
+        if ( $requestMessage == 'addCards'){
+
+            $sql = "DELETE FROM cards WHERE deck_id = ?";
+            $stmt = mysqli_prepare($dbh, $sql);
+            mysqli_stmt_bind_param($stmt, "i", $deckId);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+            $sql = "DELETE FROM quiz WHERE deck_id = ?";
+            $stmt = mysqli_prepare($dbh, $sql);
+            mysqli_stmt_bind_param($stmt, "i", $deckId);
+            mysqli_stmt_execute($stmt);
+            mysqli_stmt_close($stmt);
+        }
 
         // Process normal cards
         if (isset($input['normalCards'])) {

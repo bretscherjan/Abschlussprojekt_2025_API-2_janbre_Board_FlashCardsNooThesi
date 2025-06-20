@@ -56,3 +56,4 @@ C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCard
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\App.baml
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FileImpExp.baml
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FileImpExp.g.cs
+C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FlashCards.exe.config
