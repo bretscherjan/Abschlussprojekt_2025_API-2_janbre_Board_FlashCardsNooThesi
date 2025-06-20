@@ -14,11 +14,26 @@
 
         <!-- Header mit Titel -->
         <Border Grid.Row="0" Background="#252525" Padding="15">
-            <TextBlock Text="Decks" 
-                       FontSize="20" 
-                       FontWeight="Bold" 
-                       Foreground="#dfaa30"
-                       HorizontalAlignment="Center"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Decks" 
+                           Grid.Column="0"
+                           FontSize="20" 
+                           FontWeight="Bold" 
+                           Foreground="#dfaa30"
+                           HorizontalAlignment="Center"/>
+                <Button Cursor="Hand" Content="Log Out" Grid.Column="1"
+                    Width="80"
+                    Height="30"
+                    Margin="5"
+                    Click="LogOutButton_Click"
+                    HorizontalAlignment="Right"
+                    Background="#dfaa30"
+                    Foreground="White"/>
+            </Grid>
         </Border>
 
         <!-- Suchfeld & AddButton -->

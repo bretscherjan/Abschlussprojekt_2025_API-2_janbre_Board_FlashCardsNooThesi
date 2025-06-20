@@ -36,10 +36,9 @@ namespace FlashCards
         private string token;
         private string sessionID;
         private string hashedToken;
-        private string _baseCode = "4gdrsh92z7";
-        private string _user = "john_doe";
-        private string _password = "password123";
-        private string _request = "getCards";
+        private string _salt = Properties.Settings.Default.salt;
+        private string _user = Properties.Settings.Default.username;
+        private string _password = Properties.Settings.Default.password;
         private int _deckId;
         private List<CardList> allCards;
         private List<CardList> filteredCards;
@@ -70,12 +69,12 @@ namespace FlashCards
                     Console.WriteLine($"Token: {token} \nSessionId: {sessionID}");
                 }
 
-                hashedToken = generateHash.GenerateSHA256Hash(token, _baseCode, _password);
+                hashedToken = generateHash.GenerateSHA256Hash(token, _salt, _password);
                 Console.WriteLine($"Hashed Token + baseCode + password: {hashedToken}");
 
                 using (HttpClient requestClient = new HttpClient())
                 {
-                    var responseData = await sendRequest.SendRequest(requestClient, _request, _user, hashedToken, sessionID, _deckId.ToString());
+                    var responseData = await sendRequest.SendRequest(requestClient, "getCards", _user, hashedToken, sessionID, _deckId.ToString());
 
                     allCards = JsonConvert.DeserializeObject<List<CardList>>(responseData.ToString());
                     filteredCards = new List<CardList>(allCards);
