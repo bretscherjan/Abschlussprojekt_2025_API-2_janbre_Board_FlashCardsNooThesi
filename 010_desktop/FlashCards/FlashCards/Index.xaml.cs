@@ -114,6 +114,20 @@ namespace FlashCards
             }
         }
 
+        private void ImpExpCardsDeck_Click(object sender, RoutedEventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+            var deckId = menuItem?.Tag?.ToString();
+
+            if (!string.IsNullOrEmpty(deckId))
+            {
+                var fileImpExpWindow = new FileImpExp(this.Left, this.Top, this.Width, this.Height, this.WindowState, deckId);
+                fileImpExpWindow.Show();
+                this.Close();
+            }
+
+        }
+
         private void DeckButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int deckId)

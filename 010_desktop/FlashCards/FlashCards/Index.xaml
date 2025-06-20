@@ -86,6 +86,7 @@
                             <Button.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Cursor="Hand" Header="Delete this Deck" Click="DeleteDeck_Click" Tag="{Binding id}"/>
+                                    <MenuItem Cursor="Hand" Header="Import/Export Cards" Click="ImpExpCardsDeck_Click" Tag="{Binding id}"/>
                                 </ContextMenu>
                             </Button.ContextMenu>
                         </Button>

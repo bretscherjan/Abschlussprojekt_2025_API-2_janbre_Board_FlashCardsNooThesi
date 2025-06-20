@@ -107,9 +107,13 @@
     <Compile Include="CreateDeck.xaml.cs">
       <DependentUpon>CreateDeck.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FileImpExp.xaml.cs">
+      <DependentUpon>FileImpExp.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Index.xaml.cs">
       <DependentUpon>Index.xaml</DependentUpon>
     </Compile>
+    <Compile Include="jsonConverter.cs" />
     <Compile Include="LearnDeck.xaml.cs">
       <DependentUpon>LearnDeck.xaml</DependentUpon>
     </Compile>
@@ -129,6 +133,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CreateDeck.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FileImpExp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
