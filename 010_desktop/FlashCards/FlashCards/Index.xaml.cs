@@ -31,9 +31,9 @@ namespace FlashCards
         private string token;
         private string sessionID;
         private string hashedToken;
-        private string _baseCode = "4gdrsh92z7";
-        private string _user = "john_doe";
-        private string _password = "password123";
+        private string _salt = Properties.Settings.Default.salt;
+        private string _user = Properties.Settings.Default.username;
+        private string _password = Properties.Settings.Default.password;
         // private string _request = "getDecks";
         private List<DeckList> allDecks;
         private List<DeckList> filteredDecks;
@@ -68,7 +68,7 @@ namespace FlashCards
                     Console.WriteLine($"Token: {token} \nSessionId: {sessionID}");
                 }
 
-                hashedToken = generateHash.GenerateSHA256Hash(token, _baseCode, _password);
+                hashedToken = generateHash.GenerateSHA256Hash(token, _salt, _password);
                 Console.WriteLine($"Hashed Token + baseCode + password: {hashedToken}");
 
                 using (HttpClient requestClient = new HttpClient())
@@ -98,12 +98,40 @@ namespace FlashCards
                     Console.WriteLine($"Token: {token} \nSessionId: {sessionID}");
                 }
 
-                hashedToken = generateHash.GenerateSHA256Hash(token, _baseCode, _password);
+                hashedToken = generateHash.GenerateSHA256Hash(token, _salt, _password);
                 Console.WriteLine($"Hashed Token + baseCode + password: {hashedToken}");
 
                 using (HttpClient requestClient = new HttpClient())
                 {
                     var responseData = await sendRequest.SendRequest(requestClient, "deleteDeck", _user, hashedToken, sessionID, _deckId);
+
+                    Console.WriteLine(responseData.toString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        private async void deleteAccout()
+        {
+            try
+            {
+                using (HttpClient tokenClient = new HttpClient())
+                {
+                    var responseToken = await getToken.GetTokenAsync(tokenClient);
+                    token = responseToken.token;
+                    sessionID = responseToken.sessionID;
+                    Console.WriteLine($"Token: {token} \nSessionId: {sessionID}");
+                }
+
+                hashedToken = generateHash.GenerateSHA256Hash(token, _salt, _password);
+                Console.WriteLine($"Hashed Token + baseCode + password: {hashedToken}");
+
+                using (HttpClient requestClient = new HttpClient())
+                {
+                    var responseData = await sendRequest.DeleteUser(requestClient, "deleteUser", _user, hashedToken, sessionID);
 
                     Console.WriteLine(responseData.toString());
                 }
@@ -201,6 +229,27 @@ namespace FlashCards
             this.Close();
 
         }
+
+        private void LogOutButton_Click(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.Reset();
+            Properties.Settings.Default.Save();
+            var loginWindow = new Login();
+            loginWindow.Show();
+            this.Close();
+        }
+
+        private void DeleteAccountButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            deleteAccout();
+            Properties.Settings.Default.Reset();
+            Properties.Settings.Default.Save();
+            var loginWindow = new Login();
+            loginWindow.Show();
+            this.Close();
+        }
+
 
         /*private void EditDeck_Click(object sender, RoutedEventArgs e)
         {

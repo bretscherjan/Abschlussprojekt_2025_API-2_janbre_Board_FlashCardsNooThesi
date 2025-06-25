@@ -162,15 +162,6 @@
                                     Margin="0,0,0,10"
                                     BorderThickness="0"
                                     Click="CreateDeckHomeButton_Click">
-                                    <Button.Style>
-                                        <Style TargetType="Button">
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="#e8b43c"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
                                 </Button>
 
                                 <Button Cursor="Hand" Content="CANCEL"
@@ -181,15 +172,6 @@
                                     Margin="0,15,0,0"
                                     BorderThickness="0"
                                     Click="BackButton_Click">
-                                    <Button.Style>
-                                        <Style TargetType="Button">
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Foreground" Value="#dfaa30"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
                                 </Button>
                             </StackPanel>
                         </Grid>

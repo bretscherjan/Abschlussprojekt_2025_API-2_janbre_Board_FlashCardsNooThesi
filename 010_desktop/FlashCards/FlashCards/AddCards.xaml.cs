@@ -63,9 +63,9 @@ namespace FlashCards
         private string token;
         private string sessionID;
         private string hashedToken;
-        private string _baseCode = "4gdrsh92z7";
-        private string _user = "john_doe";
-        private string _password = "password123";
+        private string _salt = Properties.Settings.Default.salt;
+        private string _user = Properties.Settings.Default.username;
+        private string _password = Properties.Settings.Default.password;
         private int _deckId;
 
         private readonly HttpClient _httpClient;
@@ -103,7 +103,7 @@ namespace FlashCards
                     Console.WriteLine($"Token: {token} \nSessionId: {sessionID}");
                 }
 
-                hashedToken = generateHash.GenerateSHA256Hash(token, _baseCode, _password);
+                hashedToken = generateHash.GenerateSHA256Hash(token, _salt, _password);
                 Console.WriteLine($"Hashed Token + baseCode + password: {hashedToken}");
 
                 using (HttpClient requestClient = new HttpClient())
@@ -197,7 +197,7 @@ namespace FlashCards
                     Console.WriteLine($"Token: {token} \nSessionId: {sessionID}");
                 }
 
-                hashedToken = generateHash.GenerateSHA256Hash(token, _baseCode, _password);
+                hashedToken = generateHash.GenerateSHA256Hash(token, _salt, _password);
                 Console.WriteLine($"Hashed Token + baseCode + password: {hashedToken}");
 
 
