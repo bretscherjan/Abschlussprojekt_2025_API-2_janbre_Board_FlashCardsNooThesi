@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -62,6 +63,12 @@ namespace FlashCards
 
                 await postData.SendNewUserAsync(_httpClient, json, hashedToken, sessionID);
 
+                System.Windows.MessageBox.Show("registered successfully!", "Erfolg", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Information);
+
+                var loginWindow = new Login();
+                loginWindow.Show();
+                this.Close();
+
             }
             catch (Exception ex)
             {
@@ -71,18 +78,30 @@ namespace FlashCards
 
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
+            string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+
             if (first_pw.Password == second_pw.Password)
             {
                 _password = generateHash.GenerateSHA256Hash(first_pw.Password);
-                _email = email.Text;
-                _user = username.Text;
-                registerUser();
             }
             else
             {
                 MessageBox.Show("Die Passwörter stimmen nicht überein.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
-                
+                return;
             }
+            
+            if (Regex.IsMatch(email.Text, emailPattern))
+            {
+                _email = email.Text;
+            }
+            else
+            {
+                MessageBox.Show("Die E-Mail ist ungültig", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            _user = username.Text;
+            registerUser();
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)

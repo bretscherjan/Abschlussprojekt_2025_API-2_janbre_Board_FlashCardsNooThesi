@@ -55,5 +55,16 @@ namespace FlashCards.Properties {
                 this["password"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime LastLoginDate {
+            get {
+                return ((global::System.DateTime)(this["LastLoginDate"]));
+            }
+            set {
+                this["LastLoginDate"] = value;
+            }
+        }
     }
 }

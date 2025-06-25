@@ -75,7 +75,9 @@
 
         <!-- Footer Links -->
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,20">
-
+            <TextBlock Text="No account yet?" 
+                       Foreground="#a0a0a0" 
+                       VerticalAlignment="Center"/>
             <Button Content="Register" 
                     Background="Transparent" 
                     Foreground="#dfaa30" 

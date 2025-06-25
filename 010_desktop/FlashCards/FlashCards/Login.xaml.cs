@@ -57,6 +57,7 @@ namespace FlashCards
                     {
                         Properties.Settings.Default.username = _user;
                         Properties.Settings.Default.password = _password;
+                        Properties.Settings.Default.LastLoginDate = DateTime.Now;
                         Properties.Settings.Default.Save();
                         var indexWindow = new Index();
                         indexWindow.Show();

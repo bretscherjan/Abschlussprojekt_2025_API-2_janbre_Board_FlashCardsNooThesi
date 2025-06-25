@@ -183,26 +183,53 @@
 
                                 <!-- Metadaten -->
                                 <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
-                                    <TextBlock Text="Status: " 
-                                               FontWeight="SemiBold" 
-                                               Foreground="#dfaa30"/>
-                                    <TextBlock Text="{Binding status}" 
-                                               Foreground="#a0a0a0"/>
-                                    <TextBlock Text="   |   " 
-                                               Foreground="#555"/>
                                     <TextBlock Text="Favorit: " 
                                                FontWeight="SemiBold" 
                                                Foreground="#dfaa30"/>
-                                    <TextBlock Text="{Binding is_fav}" 
-                                               Foreground="#a0a0a0"/>
+                                    <Button x:Name="FavoriteButton" 
+                                            Background="Transparent" 
+                                            BorderThickness="0" 
+                                            Padding="0" 
+                                            Margin="0,-2,0,0"
+                                            Click="FavoriteButton_Click"
+                                            Tag="{Binding id}"
+                                            Cursor="Hand">
+                                        <!-- Style entfernt Hover- und Pressed-Effekte -->
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="Button">
+                                                            <ContentPresenter />
+                                                            <!-- Einfach nur den Inhalt rendern -->
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </Button.Style>
+                                        <Button.Content>
+                                            <!-- Stern-Symbol (Pfad) mit DataTrigger für is_fav -->
+                                            <Path x:Name="FavoriteStar" 
+                                                  Data="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z">
+                                                <!-- Standardfarbe (wenn is_fav = 0) -->
+                                                <Path.Style>
+                                                    <Style TargetType="Path">
+                                                        <Style.Triggers>
+                                                            <!-- Wenn is_fav = 1, wird der Stern gelb (#dfaa30) -->
+                                                            <DataTrigger Binding="{Binding is_fav}" Value="1">
+                                                                <Setter Property="Fill" Value="#dfaa30" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding is_fav}" Value="0">
+                                                                <Setter Property="Fill" Value="White" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Path.Style>
+                                            </Path>
+                                        </Button.Content>
+                                    </Button>
                                 </StackPanel>
 
-                                <!-- Erstellungsdatum -->
-                                <TextBlock Text="{Binding created_at}" 
-                                           FontSize="11" 
-                                           Foreground="#555" 
-                                           Margin="0,4,0,0"
-                                           HorizontalAlignment="Right"/>
                             </StackPanel>
                         </Border>
                     </DataTemplate>

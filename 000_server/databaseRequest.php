@@ -48,6 +48,46 @@ if ($action === 'getToken') {
 }
 
 /////////////////////////////////////////////////////////////////
+/// action === createUser
+/////////////////////////////////////////////////////////////////
+if ($action === 'createUser') {
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    fwrite($fh, print_r($data, true));
+
+    if (isset($data['username'], $data['email'], $data['password'])) {
+        $user = $data['username'];
+        $email = $data['email'];
+        $password = $data['password'];
+
+    } else {
+        http_response_code(400);
+    }
+
+    $fullToken = $_SESSION['token'] . $baseCode . $password;
+    $serverHash = hash('sha256', $fullToken);
+    
+    // Client-Hash mit Server-Hash vergleichen
+    if ($clientToken !== $serverHash) {
+        session_destroy();
+        fwrite($fh, date(DATE_RFC2822) . " : Authentifizierung fehlgeschlagen : " . $_SERVER['HTTP_CLIENT_IP'] . "\n");
+        echo json_encode(['error' => 'Authentifizierung fehlgeschlagen']);
+        exit;
+    }
+
+    $result = createUser($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $email, $password, $fh);
+
+
+    echo json_encode($result);
+    
+    // Session nach erfolgreicher Anfrage zerstören
+    session_destroy();
+    exit;
+
+}
+
+
+/////////////////////////////////////////////////////////////////
 /// action === getData
 /////////////////////////////////////////////////////////////////
 if ($action === 'getData') {
@@ -96,6 +136,10 @@ if ($action === 'getData') {
     }
 
     switch ($requestMessage) {
+        case 'verifyAccount':
+            $result = true;
+            break;
+
         case 'getDecks':
             $result = getDecks($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $fh);
             break;
@@ -187,7 +231,7 @@ function createDatabaseConnection($mysql_host, $mysql_user, $mysql_password, $my
 }
 
 //////////////////////////////////////////////////////////////////////
-// Function get User Password
+// Function getUserPassword
 //////////////////////////////////////////////////////////////////////
 
 function getUserPassword($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $fh) {
@@ -527,4 +571,67 @@ function addCards($mysql_host, $mysql_user, $mysql_password, $mysql_database, $u
     } finally {
         mysqli_close($dbh);
     }
+}
+
+//////////////////////////////////////////////////////////////////////
+// function createUser
+//////////////////////////////////////////////////////////////////////
+
+function createUser($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $email, $password, $fh) {
+    $dbh = createDatabaseConnection($mysql_host, $mysql_user, $mysql_password, $mysql_database, $fh);
+    
+    if (is_array($dbh)) {
+        return $dbh; // Fehler bei der Datenbankverbindung
+    }
+    
+    // Prüfen ob Benutzer bereits existiert
+    $checkSql = "SELECT id FROM users WHERE username = ? OR email = ?";
+    $checkStmt = mysqli_prepare($dbh, $checkSql);
+    
+    if (!$checkStmt) {
+        mysqli_close($dbh);
+        fwrite($fh, date(DATE_RFC2822) . " : SQL Prepare (Check) fehlgeschlagen\n");
+        return ['error' => 'SQL Prepare fehlgeschlagen'];
+    }
+    
+    mysqli_stmt_bind_param($checkStmt, "ss", $user, $email);
+    mysqli_stmt_execute($checkStmt);
+    $checkResult = mysqli_stmt_get_result($checkStmt);
+    
+    if (mysqli_num_rows($checkResult) > 0) {
+        mysqli_stmt_close($checkStmt);
+        mysqli_close($dbh);
+        return ['error' => 'Benutzername oder E-Mail bereits vergeben'];
+    }
+    mysqli_stmt_close($checkStmt);
+    
+    // Benutzer erstellen
+    $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+    $stmt = mysqli_prepare($dbh, $sql);
+    
+    if (!$stmt) {
+        mysqli_close($dbh);
+        fwrite($fh, date(DATE_RFC2822) . " : SQL Prepare fehlgeschlagen\n");
+        return ['error' => 'SQL Prepare fehlgeschlagen'];
+    }
+    
+    mysqli_stmt_bind_param($stmt, "sss", $user, $email, $password);
+    
+    if (!mysqli_stmt_execute($stmt)) {
+        mysqli_stmt_close($stmt);
+        mysqli_close($dbh);
+        fwrite($fh, date(DATE_RFC2822) . " : Fehler beim Erstellen des Benutzers: " . mysqli_stmt_error($stmt) . "\n");
+        return ['error' => 'Fehler beim Erstellen des Benutzers'];
+    }
+    
+    $userId = mysqli_insert_id($dbh);
+    
+    mysqli_stmt_close($stmt);
+    mysqli_close($dbh);
+
+    return [
+        'success' => true,
+        'userId' => $userId,
+        'message' => 'Benutzer erfolgreich erstellt'
+    ];
 }

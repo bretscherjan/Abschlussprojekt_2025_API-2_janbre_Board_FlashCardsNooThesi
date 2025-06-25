@@ -20,5 +20,21 @@ namespace FlashCards
 
             return JsonConvert.DeserializeObject(response);
         }
+
+        internal static async Task<dynamic> SendRequest(HttpClient client, string request, string user, string token, string sessionID, string deckId, string cardId, string is_fav, string type)
+        {
+            var response = await client.GetStringAsync(
+                $"{baseUrl}?action=getData&request={request}&user={user}&token={token}&sessionID={sessionID}&deckId={deckId}&cardId={cardId}&isFav={is_fav}&type={type}");
+
+            return JsonConvert.DeserializeObject(response);
+        }
+
+        internal static async Task<dynamic> DeleteUser(HttpClient client, string request, string user, string token, string sessionID)
+        {
+            var response = await client.GetStringAsync(
+                $"{baseUrl}?action=getData&request={request}&user={user}&token={token}&sessionID={sessionID}");
+
+            return JsonConvert.DeserializeObject(response);
+        }
     }
 }

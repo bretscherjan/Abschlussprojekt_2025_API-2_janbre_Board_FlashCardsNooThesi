@@ -92,7 +92,45 @@ namespace FlashCards
             _deckId = deckId;
         }
 
-        private async void getCards()
+
+
+
+
+
+        private async void FavoriteButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Button button = (Button)sender;
+                int cardId = (int)button.Tag;
+
+                var card = allCards.FirstOrDefault(c => c.id == cardId);
+                if (card != null)
+                {
+                    card.is_fav = card.is_fav == 1 ? 0 : 1;
+
+                    // Aktualisiere die Anzeige
+                    this.DataContext = null;
+                    this.DataContext = filteredCards;
+
+                    await createTokenHash();
+
+                    using (HttpClient requestClient = new HttpClient())
+                    {
+                        var responseData = await sendRequest.SendRequest(requestClient, "updateCardFavorite", _user, hashedToken, sessionID, _deckId.ToString(), cardId.ToString(), card.is_fav.ToString(), card.type.ToString());
+
+                        Console.WriteLine(responseData.message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating favorite: {ex.Message}");
+            }
+        }
+
+
+        private async Task createTokenHash()
         {
             try
             {
@@ -106,6 +144,19 @@ namespace FlashCards
 
                 hashedToken = generateHash.GenerateSHA256Hash(token, _salt, _password);
                 Console.WriteLine($"Hashed Token + baseCode + password: {hashedToken}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+
+        private async void getCards()
+        {
+            try
+            {
+                await createTokenHash();
 
                 using (HttpClient requestClient = new HttpClient())
                 {

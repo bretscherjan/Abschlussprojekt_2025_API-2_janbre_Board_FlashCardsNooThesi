@@ -35,7 +35,6 @@ namespace FlashCards
             string responseBody = await response.Content.ReadAsStringAsync();
             Console.WriteLine($"API Response: {responseBody}");
 
-            MessageBox.Show(responseBody);
         }
     }
 }
