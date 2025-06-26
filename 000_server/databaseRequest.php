@@ -21,6 +21,12 @@ $endColor = $_GET['endColor'] ?? '#000000';
 $title = $_GET['title'] ?? null;
 $alt = $_GET['alt'] ?? $title;
 
+$cardId = $_GET['cardId'] ?? null;
+$isFav = $_GET['isFav'] ?? null;
+$type = $_GET['type'] ?? null;
+
+$collaborator = $_GET['collaborator'] ?? null;
+
 $baseCode = '4gdrsh92z7';
 header('Content-Type: application/json');
 
@@ -76,6 +82,53 @@ if ($action === 'createUser') {
     }
 
     $result = createUser($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $email, $password, $fh);
+
+
+    echo json_encode($result);
+    
+    // Session nach erfolgreicher Anfrage zerstören
+    session_destroy();
+    exit;
+
+}
+
+/////////////////////////////////////////////////////////////////
+/// action === updateUser
+/////////////////////////////////////////////////////////////////
+if ($action === 'updateUser') {
+    $data = json_decode(file_get_contents('php://input'), true);
+
+    fwrite($fh, print_r($data, true));
+
+    if (isset($data['username'], $data['email'], $data['password'])) {
+        $user = $data['username'];
+        $email = $data['email'];
+        $userOld = $data['OldUser'];
+
+    } else {
+        http_response_code(400);
+    }
+
+    $password = getUserPassword($mysql_host, $mysql_user, $mysql_password, $mysql_database, $userOld, $fh);
+    
+    if (is_array($password) && isset($password['error'])) {
+        fwrite($fh, date(DATE_RFC2822) . " : " . $password['error'] . " : " . $_SERVER['HTTP_CLIENT_IP'] . "\n");
+        echo json_encode($password);
+        exit;
+    }
+
+    $fullToken = $_SESSION['token'] . $baseCode . $password;
+    $serverHash = hash('sha256', $fullToken);
+    
+    // Client-Hash mit Server-Hash vergleichen
+    if ($clientToken !== $serverHash) {
+        session_destroy();
+        fwrite($fh, date(DATE_RFC2822) . " : Authentifizierung fehlgeschlagen : " . $_SERVER['HTTP_CLIENT_IP'] . "\n");
+        echo json_encode(['error' => 'Authentifizierung fehlgeschlagen']);
+        exit;
+    }
+
+    $result = updateUser($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $email, $password, $userOld, $fh);
 
 
     echo json_encode($result);
@@ -148,6 +201,14 @@ if ($action === 'getData') {
             $result = getCards($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $deckId, $fh);
             break;
 
+        case 'getUsersCollaborator':
+            $result = getUsers($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, 'collaborator', $fh);
+            break;
+
+        case 'getUsersFollow':
+            $result = getUsers($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, 'follow', $fh);
+            break;
+
         case 'deleteDeck':
             $result = deleteDeck($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $deckId, $fh);
             break;
@@ -155,7 +216,7 @@ if ($action === 'getData') {
         case 'addDeck':
             $startColor = '#' . $startColor;
             $endColor = '#' . $endColor;
-            $result = addDeck($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $startColor, $endColor, $title, $alt, $fh);
+            $result = addDeck($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $startColor, $endColor, $title, $alt, $collaborator, $fh);
             break;
         
         case 'addCards':
@@ -164,6 +225,18 @@ if ($action === 'getData') {
 
         case 'importCards':
             $result = addCards($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $deckId, $requestMessage, $fh);
+            break;
+
+        case 'updateCardFavorite':
+            $result = updateCardFavorite($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $deckId, $cardId, $isFav, $type, $fh);
+            break;
+
+        case 'deleteUser':
+            $result = deleteUser($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $fh);
+            break;
+
+        case 'getUserCredentials':
+            $result = getUserCredentials($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $fh);
             break;
 
         default:
@@ -385,6 +458,116 @@ function getCards($mysql_host, $mysql_user, $mysql_password, $mysql_database, $u
     return $cards;
 }
 
+
+//////////////////////////////////////////////////////////////////////
+// function getUsers
+//////////////////////////////////////////////////////////////////////
+
+function getUsers($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $type, $fh) {
+    $dbh = createDatabaseConnection($mysql_host, $mysql_user, $mysql_password, $mysql_database, $fh);
+    
+    if ($type == 'collaborator') {
+        $sql = "SELECT u.username 
+                FROM users u
+                JOIN follows f ON u.id = f.follower_id
+                WHERE f.followed_id = (SELECT id FROM users WHERE username = ?) AND username != ?";
+
+        $stmt = mysqli_prepare($dbh, $sql);
+
+        if (!$stmt) {
+            mysqli_close($dbh);
+            return ['error' => 'SQL Prepare fehlgeschlagen'];
+        }
+
+        mysqli_stmt_bind_param($stmt, "ss", $user, $user);
+    } else if ($type == 'follow') {
+
+        $sql = "SELECT u.username 
+                FROM users u
+                WHERE u.id != (SELECT id FROM users WHERE username = ?)
+                AND NOT EXISTS (
+                    SELECT 1 
+                    FROM follows f 
+                    WHERE f.follower_id = (SELECT id FROM users WHERE username = ?)
+                    AND f.followed_id = u.id
+                )";
+
+        $stmt = mysqli_prepare($dbh, $sql);
+
+        if (!$stmt) {
+            mysqli_close($dbh);
+            return ['error' => 'SQL Prepare fehlgeschlagen'];
+        }
+
+        mysqli_stmt_bind_param($stmt, "ss", $user, $user);
+    }
+
+    
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    
+    if (!$result) {
+        mysqli_stmt_close($stmt);
+        mysqli_close($dbh);
+        return ['error' => 'Fehler bei der Abfrage'];
+    }
+    
+    $users = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $users[] = $row;
+    }
+    
+    mysqli_stmt_close($stmt);
+    mysqli_close($dbh);
+
+    return $users;
+}
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////
+// function getUserCredentials
+//////////////////////////////////////////////////////////////////////
+
+function getUserCredentials($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $fh) {
+    $dbh = createDatabaseConnection($mysql_host, $mysql_user, $mysql_password, $mysql_database, $fh);
+
+    $sql = "SELECT username, email, password 
+            FROM users
+            WHERE username = ?";
+    $stmt = mysqli_prepare($dbh, $sql);
+    
+    if (!$stmt) {
+        mysqli_close($dbh);
+        return ['error' => 'SQL Prepare fehlgeschlagen'];
+    }
+
+    mysqli_stmt_bind_param($stmt, "s", $user);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    
+    if (!$result) {
+        mysqli_stmt_close($stmt);
+        mysqli_close($dbh);
+        return ['error' => 'Fehler bei der Abfrage'];
+    }
+    
+    $user = [];
+    while ($row = mysqli_fetch_assoc($result)) {
+        $user[] = $row;
+    }
+    
+    mysqli_stmt_close($stmt);
+    mysqli_close($dbh);
+
+    return $user;
+
+}
+
+
 //////////////////////////////////////////////////////////////////////
 // function deleteDeck
 //////////////////////////////////////////////////////////////////////
@@ -426,11 +609,53 @@ function deleteDeck($mysql_host, $mysql_user, $mysql_password, $mysql_database, 
     }
 }
 
+
+//////////////////////////////////////////////////////////////////////
+// function deleteUser
+//////////////////////////////////////////////////////////////////////
+
+function deleteUser($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $fh) {
+    $dbh = createDatabaseConnection($mysql_host, $mysql_user, $mysql_password, $mysql_database, $fh);
+
+    mysqli_begin_transaction($dbh);
+
+    try {
+        $sql = "DELETE FROM users WHERE username = ?";
+        
+        $stmt = mysqli_prepare($dbh, $sql);
+        if (!$stmt) {
+            throw new Exception("Prepare failed: " . mysqli_error($dbh));
+        }
+        
+        mysqli_stmt_bind_param($stmt, "s", $user);
+        $success = mysqli_stmt_execute($stmt);
+        
+        if (!$success) {
+            throw new Exception("Execute failed: " . mysqli_stmt_error($stmt));
+        }
+        
+        $affectedRows = mysqli_stmt_affected_rows($stmt);
+        mysqli_stmt_close($stmt);
+
+        mysqli_commit($dbh);
+        mysqli_close($dbh);
+        
+        return [
+            'success' => true,
+            'affected_rows' => $affectedRows
+        ];
+    } catch (Exception $e) {
+        mysqli_rollback($dbh);
+        mysqli_close($dbh);
+        return ['error' => $e->getMessage()];
+    }
+}
+
 //////////////////////////////////////////////////////////////////////
 // function addDeck
 //////////////////////////////////////////////////////////////////////
 
-function addDeck($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $startColor, $endColor, $title, $alt, $fh) {
+function addDeck($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $startColor, $endColor, $title, $alt, $collaborator, $fh) {
     $dbh = createDatabaseConnection($mysql_host, $mysql_user, $mysql_password, $mysql_database, $fh);
     $error = null;
     $deckId = null;
@@ -449,6 +674,15 @@ function addDeck($mysql_host, $mysql_user, $mysql_password, $mysql_database, $us
         
         if ($stmt2 && mysqli_stmt_bind_param($stmt2, "iss", $deckId, $startColor, $endColor) && mysqli_stmt_execute($stmt2)) {
             mysqli_stmt_close($stmt2);
+
+            $sql3 = "INSERT INTO collaborators (deck_id, user_id) VALUES (?, (SELECT id FROM users WHERE username = ?))";
+            $stmt3 = mysqli_prepare($dbh, $sql3);
+
+            if ($stmt3 && mysqli_stmt_bind_param($stmt3, "is", $deckId, $collaborator) && mysqli_stmt_execute($stmt3)) {
+                mysqli_stmt_close($stmt3);
+            } else {
+                $error = 'Fehler beim Hinzufügen von Mitarbeitern: ' . ($stmt3 ? mysqli_stmt_error($stmt3) : mysqli_error($dbh));
+            }
         } else {
             $error = 'Fehler beim Hinzufügen der Deck-Farben: ' . ($stmt2 ? mysqli_stmt_error($stmt2) : mysqli_error($dbh));
         }
@@ -634,4 +868,104 @@ function createUser($mysql_host, $mysql_user, $mysql_password, $mysql_database, 
         'userId' => $userId,
         'message' => 'Benutzer erfolgreich erstellt'
     ];
+}
+
+//////////////////////////////////////////////////////////////////////
+// function updateUser
+//////////////////////////////////////////////////////////////////////
+
+function updateUser($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $email, $password, $userOld, $fh) {
+    $dbh = createDatabaseConnection($mysql_host, $mysql_user, $mysql_password, $mysql_database, $fh);
+    
+    if (is_array($dbh)) {
+        return $dbh; // Fehler bei der Datenbankverbindung
+    }
+    
+    
+    // Benutzer erstellen
+    $sql = "UPDATE users SET username = ?, email = ?, password = ? WHERE username = ?";
+    $stmt = mysqli_prepare($dbh, $sql);
+    
+    if (!$stmt) {
+        mysqli_close($dbh);
+        fwrite($fh, date(DATE_RFC2822) . " : SQL Prepare fehlgeschlagen\n");
+        return ['error' => 'SQL Prepare fehlgeschlagen'];
+    }
+    
+    mysqli_stmt_bind_param($stmt, "ssss", $user, $email, $password, $userOld);
+    
+    if (!mysqli_stmt_execute($stmt)) {
+        mysqli_stmt_close($stmt);
+        mysqli_close($dbh);
+        fwrite($fh, date(DATE_RFC2822) . " : Fehler beim Erstellen des Benutzers: " . mysqli_stmt_error($stmt) . "\n");
+        return ['error' => 'Fehler beim Update des Benutzers'];
+    }
+    
+    $userId = mysqli_insert_id($dbh);
+    
+    mysqli_stmt_close($stmt);
+    mysqli_close($dbh);
+
+    return [
+        'success' => true,
+        'userId' => $userId,
+        'message' => 'Benutzer erfolgreich erstellt'
+    ];
+}
+
+
+//////////////////////////////////////////////////////////////////////
+// function updateCardFavorite
+//////////////////////////////////////////////////////////////////////
+
+function updateCardFavorite($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $deckId, $cardId, $isFav, $type, $fh) {
+    $dbh = createDatabaseConnection($mysql_host, $mysql_user, $mysql_password, $mysql_database, $fh);
+    
+    if (is_array($dbh)) {
+        return $dbh;
+    }
+
+    if ($type == 'card') {
+    
+        $sql = "UPDATE cards SET is_fav = ? WHERE id = ?";
+
+    } else {
+            
+        $sql = "UPDATE quiz SET is_fav = ? WHERE id = ?";
+
+    }
+
+    $stmt = mysqli_prepare($dbh, $sql);
+        
+    if (!$stmt) {
+        mysqli_close($dbh);
+        fwrite($fh, date(DATE_RFC2822) . " : SQL Prepare fehlgeschlagen\n");
+        return ['error' => 'SQL Prepare fehlgeschlagen'];
+    }
+        
+    mysqli_stmt_bind_param($stmt, "ii", $isFav, $cardId);
+
+    
+    if (!mysqli_stmt_execute($stmt)) {
+        mysqli_stmt_close($stmt);
+        mysqli_close($dbh);
+        fwrite($fh, date(DATE_RFC2822) . " : Fehler beim Erstellen des Benutzers: " . mysqli_stmt_error($stmt) . "\n");
+        return ['error' => 'Fehler beim Erstellen des Benutzers'];
+    }
+    
+    $affectedRows = mysqli_stmt_affected_rows($stmt);
+    mysqli_stmt_close($stmt);
+    mysqli_close($dbh);
+
+    if ($affectedRows > 0) {
+        fwrite($fh, date(DATE_RFC2822) . " : Successfully updated favorite status for $type ID $cardId to $isFav\n");
+        return [
+            'success' => true,
+            'cardId' => $cardId,
+            'isFav' => $isFav,
+            'message' => 'Favorite status updated successfully'
+        ];
+    } else {
+        return ['error' => 'No rows affected - item may not exist'];
+    }
 }

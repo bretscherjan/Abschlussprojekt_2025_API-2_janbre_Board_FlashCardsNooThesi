@@ -11,6 +11,8 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
 
 namespace FlashCards
@@ -114,33 +116,6 @@ namespace FlashCards
             }
         }
 
-        private async void deleteAccout()
-        {
-            try
-            {
-                using (HttpClient tokenClient = new HttpClient())
-                {
-                    var responseToken = await getToken.GetTokenAsync(tokenClient);
-                    token = responseToken.token;
-                    sessionID = responseToken.sessionID;
-                    Console.WriteLine($"Token: {token} \nSessionId: {sessionID}");
-                }
-
-                hashedToken = generateHash.GenerateSHA256Hash(token, _salt, _password);
-                Console.WriteLine($"Hashed Token + baseCode + password: {hashedToken}");
-
-                using (HttpClient requestClient = new HttpClient())
-                {
-                    var responseData = await sendRequest.DeleteUser(requestClient, "deleteUser", _user, hashedToken, sessionID);
-
-                    Console.WriteLine(responseData.toString());
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-        }
 
         private void ImpExpCardsDeck_Click(object sender, RoutedEventArgs e)
         {
@@ -230,25 +205,13 @@ namespace FlashCards
 
         }
 
-        private void LogOutButton_Click(object sender, RoutedEventArgs e)
+        private void AcoountButton_Click(object sender, RoutedEventArgs e)
         {
-            Properties.Settings.Default.Reset();
-            Properties.Settings.Default.Save();
-            var loginWindow = new Login();
-            loginWindow.Show();
+            var accountWindow = new Account(this.Left, this.Top, this.Width, this.Height, this.WindowState);
+            accountWindow.Show();
             this.Close();
         }
 
-        private void DeleteAccountButton_Click(object sender, RoutedEventArgs e)
-        {
-
-            deleteAccout();
-            Properties.Settings.Default.Reset();
-            Properties.Settings.Default.Save();
-            var loginWindow = new Login();
-            loginWindow.Show();
-            this.Close();
-        }
 
 
         /*private void EditDeck_Click(object sender, RoutedEventArgs e)

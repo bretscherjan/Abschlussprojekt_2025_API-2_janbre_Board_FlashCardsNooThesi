@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         BorderBrush="#dfaa30"
         BorderThickness="1"
+        Icon="/favicon.ico"
         Title="Login" Height="500" Width="400" 
         Background="#2f2f2f" 
         ResizeMode="NoResize"

@@ -30,17 +30,17 @@ namespace FlashCards
                 string options = parts[4].Trim();
                 bool isFav = parts[5].Trim().ToLower() == "true";
 
-                if (type == "normalCards")
+                if (type == "card")
                 {
                     normalCards.Add(new NormalCard
                     {
                         question = question,
                         answer = answer,
                         is_fav = isFav,
-                        status = "needs_practice"
+                        status = "0"
                     });
                 }
-                else if (type == "quizCards")
+                else if (type == "quiz")
                 {
                     var opts = options.Split(',').Select(o => o.Trim()).ToArray();
                     if (opts.Length < 4) continue; // ensure 4 options
@@ -55,7 +55,7 @@ namespace FlashCards
                         option4 = opts[3],
                         correctIndex = correctIndex,
                         is_fav = isFav,
-                        status = "needs_practice"
+                        status = "0"
                     });
                 }
             }

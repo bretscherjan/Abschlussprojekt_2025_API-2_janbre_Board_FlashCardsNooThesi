@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
@@ -35,12 +36,18 @@ namespace FlashCards
         }
     }
 
+    public class UserCollaborator
+    {
+        public string username { get; set; }
+    }
+
+
 
 
     /// <summary>
     /// Interaktionslogik für CreateDeck.xaml
     /// </summary>
-    public partial class CreateDeck : Window
+    public partial class CreateDeck : Window, INotifyPropertyChanged
     {
 
         private string token;
@@ -49,6 +56,35 @@ namespace FlashCards
         private string _salt = Properties.Settings.Default.salt;
         private string _user = Properties.Settings.Default.username;
         private string _password = Properties.Settings.Default.password;
+
+        private List<string> _benutzerNamenListe;
+        public List<string> BenutzerNamenListe
+        {
+            get => _benutzerNamenListe;
+            set
+            {
+                _benutzerNamenListe = value;
+                OnPropertyChanged(nameof(BenutzerNamenListe));
+            }
+        }
+
+        private string _selectedBenutzer;
+        public string SelectedBenutzer
+        {
+            get => _selectedBenutzer;
+            set
+            {
+                _selectedBenutzer = value;
+                OnPropertyChanged(nameof(SelectedBenutzer));
+            }
+        }
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string propertyName) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+
 
         public CreateDeck(double left, double top, double width, double height, WindowState state)
         {
@@ -61,11 +97,44 @@ namespace FlashCards
             this.Width = width;
             this.Height = height;
             this.WindowState = state;
+
+            getUsers();
         }
 
         public SolidColorBrush FirstColorBrush => new SolidColorBrush(FirstColor);
         public SolidColorBrush SecondColorBrush => new SolidColorBrush(SecondColor);
 
+
+
+        private async void getUsers()
+        {
+            try
+            {
+                using (HttpClient tokenClient = new HttpClient())
+                {
+                    var responseToken = await getToken.GetTokenAsync(tokenClient);
+                    token = responseToken.token;
+                    sessionID = responseToken.sessionID;
+                    Console.WriteLine($"Token: {token} \nSessionId: {sessionID}");
+                }
+
+                hashedToken = generateHash.GenerateSHA256Hash(token, _salt, _password);
+                Console.WriteLine($"Hashed Token + baseCode + password: {hashedToken}");
+
+                using (HttpClient requestClient = new HttpClient())
+                {
+                    var responseData = await sendRequest.SendRequest(requestClient, "getUsersCollaborator", _user, hashedToken, sessionID, "0");
+
+                    List<UserCollaborator> allUsers = JsonConvert.DeserializeObject<List<UserCollaborator>>(responseData.ToString());
+                    BenutzerNamenListe = allUsers.Select(u => u.username).ToList();
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
 
         private async void createDeck()
         {
@@ -91,7 +160,7 @@ namespace FlashCards
                 using (HttpClient requestClient = new HttpClient())
                 {
                     var responseData = await addDeck.AddDeck(requestClient, "addDeck", _user, hashedToken, sessionID, 
-                        removeHashtagColor.RemoveHashtagColor(FirstColor.ToString()), removeHashtagColor.RemoveHashtagColor(SecondColor.ToString()), title.Text, alt.Text);
+                        removeHashtagColor.RemoveHashtagColor(FirstColor.ToString()), removeHashtagColor.RemoveHashtagColor(SecondColor.ToString()), title.Text, alt.Text, SelectedBenutzer);
 
                     Console.WriteLine(responseData.toString());
                 }
