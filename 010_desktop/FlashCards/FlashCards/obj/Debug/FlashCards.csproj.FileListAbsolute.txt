@@ -60,4 +60,8 @@ C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCard
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FlashCards.csproj.Up2Date
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FlashCards.exe
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FlashCards.pdb
+C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\Account.baml
+C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\Account.g.cs
+C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\bin\Debug\favicon.ico
+C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FlashCards_Content.g.cs
 C:\Daten\020_ZLI\010_projects\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards\FlashCards\obj\Debug\FlashCards.exe.config

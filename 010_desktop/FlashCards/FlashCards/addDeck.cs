@@ -14,10 +14,10 @@ namespace FlashCards
 
         private static string baseUrl = "https://jan-bretscher.ch/01_zli/FlashCards/databaseRequest.php";
 
-        internal static async Task<dynamic> AddDeck(HttpClient client, string request, string user, string token, string sessionID, string startColor, string endColor, string title, string alt)
+        internal static async Task<dynamic> AddDeck(HttpClient client, string request, string user, string token, string sessionID, string startColor, string endColor, string title, string alt, string collaborator)
         {
             var response = await client.GetStringAsync(
-                $"{baseUrl}?action=getData&request={request}&user={user}&token={token}&sessionID={sessionID}&startColor={startColor}&endColor={endColor}&title={title}&alt={alt}");
+                $"{baseUrl}?action=getData&request={request}&user={user}&token={token}&sessionID={sessionID}&startColor={startColor}&endColor={endColor}&title={title}&alt={alt}&collaborator={collaborator}");
 
             return JsonConvert.DeserializeObject(response);
         }

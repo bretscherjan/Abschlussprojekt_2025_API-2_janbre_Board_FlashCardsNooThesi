@@ -9,6 +9,7 @@
         Title="Create New Deck" 
         Height="640" 
         Width="478"
+        Icon="/favicon.ico"
         BorderBrush="#dfaa30"
         BorderThickness="1">
     <!-- WindowStyle="None" -->
@@ -163,6 +164,17 @@
                                     BorderThickness="0"
                                     Click="CreateDeckHomeButton_Click">
                                 </Button>
+                                <ComboBox Style="{StaticResource YellowComboBoxStyle}"
+                                          ItemsSource="{Binding BenutzerNamenListe}"
+                                          SelectedItem="{Binding SelectedBenutzer, Mode=TwoWay}" />
+
+
+
+
+
+
+
+
 
                                 <Button Cursor="Hand" Content="CANCEL"
                                     Background="Transparent"

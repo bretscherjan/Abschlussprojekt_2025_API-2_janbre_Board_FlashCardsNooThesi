@@ -36,5 +36,18 @@ namespace FlashCards
             Console.WriteLine($"API Response: {responseBody}");
 
         }
+
+        public static async Task<string> UpdateUserAsync(HttpClient httpClient, string jsonData, string token, string sessionID)
+        {
+            string baseUrl = $"https://jan-bretscher.ch/01_zli/FlashCards/databaseRequest.php?action=updateUser&token={token}&sessionID={sessionID}";
+
+            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await httpClient.PostAsync(baseUrl, content);
+            response.EnsureSuccessStatusCode();
+            string responseBody = await response.Content.ReadAsStringAsync();
+            Console.WriteLine($"API Response: {responseBody}");
+
+            return responseBody;
+        }
     }
 }
