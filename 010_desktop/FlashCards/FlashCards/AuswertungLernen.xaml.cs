@@ -1,4 +1,13 @@
-﻿using System;
+﻿/**
+ * AuswertungLernen.xaml.cs
+ *
+ * Displays the evaluation of a learning session, including results and statistics for answered cards.
+ *
+ * Author: Jan Bretscher
+ * Created: June 27, 2025
+ * Version: 3.3
+ */
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -7,15 +16,12 @@ using System.Windows.Data;
 
 namespace FlashCards
 {
-
-
     public class CardResult
     {
         public string Question { get; set; }
         public string CorrectAnswer { get; set; }
         public bool WasCorrect { get; set; }
     }
-
 
     public partial class AuswertungLernen : Window
     {
@@ -27,7 +33,16 @@ namespace FlashCards
 
         public int _deckId;
 
-        public AuswertungLernen(double left, double top, double width, double height, WindowState state, List<bool> results, List<Cards> cards, int deckId)
+        public AuswertungLernen(
+            double left,
+            double top,
+            double width,
+            double height,
+            WindowState state,
+            List<bool> results,
+            List<Cards> cards,
+            int deckId
+        )
         {
             InitializeComponent();
             DataContext = this;
@@ -44,28 +59,25 @@ namespace FlashCards
             IncorrectCount = results.Count(r => !r);
             Percentage = results.Count > 0 ? (CorrectCount / (double)results.Count) * 100 : 0;
 
-
             CardResults = new List<CardResult>();
             for (int i = 0; i < results.Count; i++)
             {
-                CardResults.Add(new CardResult
-                {
-                    Question = cards[i].question,
-                    CorrectAnswer = GetCorrectAnswer(cards[i]),
-                    WasCorrect = results[i]
-                });
+                CardResults.Add(
+                    new CardResult
+                    {
+                        Question = cards[i].question,
+                        CorrectAnswer = GetCorrectAnswer(cards[i]),
+                        WasCorrect = results[i],
+                    }
+                );
             }
 
             DataContext = this;
-
         }
-
 
         private string GetCorrectAnswer(Cards card)
         {
-            return card.type == "card"
-                ? card.answer
-                : GetQuizAnswer(card);
+            return card.type == "card" ? card.answer : GetQuizAnswer(card);
         }
 
         private string GetQuizAnswer(Cards card)
@@ -85,10 +97,16 @@ namespace FlashCards
             }
         }
 
-
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            new Deck(this.Left, this.Top, this.Width, this.Height, this.WindowState, _deckId).Show();
+            new Deck(
+                this.Left,
+                this.Top,
+                this.Width,
+                this.Height,
+                this.WindowState,
+                _deckId
+            ).Show();
             this.Close();
         }
     }

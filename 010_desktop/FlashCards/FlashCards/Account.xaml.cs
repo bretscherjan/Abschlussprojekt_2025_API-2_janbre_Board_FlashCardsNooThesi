@@ -1,4 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿/**
+ * Account.xaml.cs
+ *
+ * Handles user account management, including profile data, followers, and account actions.
+ *
+ * Author: Jan Bretscher
+ * Created: June 27, 2025
+ * Version: 3.3
+ */
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -15,6 +24,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
@@ -75,6 +85,9 @@ namespace FlashCards
         }
 
         private List<string> _benutzerNamenListe;
+        private List<string> _followersListe;    
+        private List<string> _followingListe;    
+
         public List<string> BenutzerNamenListe
         {
             get => _benutzerNamenListe;
@@ -82,6 +95,26 @@ namespace FlashCards
             {
                 _benutzerNamenListe = value;
                 OnPropertyChanged(nameof(BenutzerNamenListe));
+            }
+        }
+
+        public List<string> FollowersListe
+        {
+            get => _followersListe;
+            set
+            {
+                _followersListe = value;
+                OnPropertyChanged(nameof(FollowersListe));
+            }
+        }
+
+        public List<string> FollowingListe
+        {
+            get => _followingListe;
+            set
+            {
+                _followingListe = value;
+                OnPropertyChanged(nameof(FollowingListe));
             }
         }
 
@@ -103,6 +136,10 @@ namespace FlashCards
 
             getUserData();
 
+            _benutzerNamenListe = new List<string>();
+            _followersListe = new List<string>();
+            _followingListe = new List<string>();
+
             this.Left = left;
             this.Top = top;
             this.Width = width;
@@ -111,13 +148,16 @@ namespace FlashCards
 
             _httpClient = new HttpClient();
 
-            getUsers();
+            getNotFollowing();
+            getFollowers();
+            getFollowing();
 
         }
 
-
-
-        private async void getUsers()
+        /// <summary>
+        /// Loads the list of users that the current user does not follow yet.
+        /// </summary>
+        private async void getNotFollowing()
         {
             try
             {
@@ -134,7 +174,7 @@ namespace FlashCards
 
                 using (HttpClient requestClient = new HttpClient())
                 {
-                    var responseData = await sendRequest.SendRequest(requestClient, "getUsersFollow", _OldUser, hashedToken, sessionID, "0");
+                    var responseData = await sendRequest.SendRequest(requestClient, "getUsersNotFollowing", _OldUser, hashedToken, sessionID, "0");
 
                     List<UserFollow> allUsers = JsonConvert.DeserializeObject<List<UserFollow>>(responseData.ToString());
                     BenutzerNamenListe = allUsers.Select(u => u.username).ToList();
@@ -147,7 +187,67 @@ namespace FlashCards
             }
         }
 
+        /// <summary>
+        /// Loads the list of users who follow the current user.
+        /// </summary>
+        private async void getFollowers()
+        {
+            try
+            {
+                using (HttpClient tokenClient = new HttpClient())
+                {
+                    var responseToken = await getToken.GetTokenAsync(tokenClient);
+                    token = responseToken.token;
+                    sessionID = responseToken.sessionID;
+                }
 
+                hashedToken = generateHash.GenerateSHA256Hash(token, _salt, _OldPassword);
+
+                using (HttpClient requestClient = new HttpClient())
+                {
+                    var responseData = await sendRequest.SendRequest(requestClient, "getUsersFollowers", _OldUser, hashedToken, sessionID, "0");
+                    List<UserFollow> allUsers = JsonConvert.DeserializeObject<List<UserFollow>>(responseData.ToString());
+                    FollowersListe = allUsers.Select(u => u.username).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Loads the list of users the current user is following.
+        /// </summary>
+        private async void getFollowing()
+        {
+            try
+            {
+                using (HttpClient tokenClient = new HttpClient())
+                {
+                    var responseToken = await getToken.GetTokenAsync(tokenClient);
+                    token = responseToken.token;
+                    sessionID = responseToken.sessionID;
+                }
+
+                hashedToken = generateHash.GenerateSHA256Hash(token, _salt, _OldPassword);
+
+                using (HttpClient requestClient = new HttpClient())
+                {
+                    var responseData = await sendRequest.SendRequest(requestClient, "getUsersFollowing", _OldUser, hashedToken, sessionID, "0");
+                    List<UserFollow> allUsers = JsonConvert.DeserializeObject<List<UserFollow>>(responseData.ToString());
+                    FollowingListe = allUsers.Select(u => u.username).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Updates the user profile data (username, email, password) via API.
+        /// </summary>
         private async void updateUser()
         {
             try
@@ -200,7 +300,43 @@ namespace FlashCards
             }
         }
 
+        /// <summary>
+        /// Adds a new follow relationship to another user.
+        /// </summary>
+        private async void addFollow()
+        {
+            try
+            {
 
+                using (HttpClient tokenClient = new HttpClient())
+                {
+                    var responseToken = await getToken.GetTokenAsync(tokenClient);
+                    token = responseToken.token;
+                    sessionID = responseToken.sessionID;
+                    Console.WriteLine($"Token: {token} \nSessionId: {sessionID}");
+                }
+
+                hashedToken = generateHash.GenerateSHA256Hash(token, _salt, _OldPassword);
+                Console.WriteLine($"Hashed Token + baseCode + password: {hashedToken}");
+
+                using (HttpClient requestClient = new HttpClient())
+                {
+                    var responseData = await sendRequest.AddFollow(requestClient, "addFollow", _OldUser, hashedToken, sessionID, SelectedBenutzer);
+
+                    getNotFollowing();
+                    getFollowers();
+                    getFollowing();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Loads the current user's profile data from the backend.
+        /// </summary>
         private async void getUserData()
         {
             try
@@ -268,6 +404,14 @@ namespace FlashCards
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
 
+        private void SaveFollow_Click(object sender, RoutedEventArgs e)
+        {
+            addFollow();
+        }
+
+        /// <summary>
+        /// Deletes the current user account from the backend.
+        /// </summary>
         private async void deleteAccout()
         {
             try

@@ -1,4 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿/**
+ * Deck.xaml.cs
+ *
+ * Manages the display and interaction with cards in a specific deck, including learning and editing features.
+ *
+ * Author: Jan Bretscher
+ * Created: June 27, 2025
+ * Version: 3.3
+ */
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +19,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Newtonsoft.Json;
 
 namespace FlashCards
 {
@@ -31,8 +40,6 @@ namespace FlashCards
         public string created_at { get; set; }
     }
 
-
-
     public partial class Deck : Window
     {
         private string token;
@@ -45,9 +52,15 @@ namespace FlashCards
         private List<CardList> allCards;
         private List<CardList> filteredCards;
 
-        public Deck(double left, double top, double width, double height, WindowState state, int deckId)
+        public Deck(
+            double left,
+            double top,
+            double width,
+            double height,
+            WindowState state,
+            int deckId
+        )
         {
-
             InitializeComponent();
             getCards();
 
@@ -60,6 +73,9 @@ namespace FlashCards
             _deckId = deckId;
         }
 
+        /// <summary>
+        /// Toggles the favorite status of a card.
+        /// </summary>
         private async void FavoriteButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -79,7 +95,17 @@ namespace FlashCards
 
                     using (HttpClient requestClient = new HttpClient())
                     {
-                        var responseData = await sendRequest.SendRequest(requestClient, "updateCardFavorite", _user, hashedToken, sessionID, _deckId.ToString(), cardId.ToString(), card.is_fav.ToString(), card.type.ToString());
+                        var responseData = await sendRequest.SendRequest(
+                            requestClient,
+                            "updateCardFavorite",
+                            _user,
+                            hashedToken,
+                            sessionID,
+                            _deckId.ToString(),
+                            cardId.ToString(),
+                            card.is_fav.ToString(),
+                            card.type.ToString()
+                        );
 
                         Console.WriteLine(responseData.message);
                     }
@@ -91,7 +117,9 @@ namespace FlashCards
             }
         }
 
-
+        /// <summary>
+        /// Generates a new authentication token hash.
+        /// </summary>
         private async Task createTokenHash()
         {
             try
@@ -113,19 +141,29 @@ namespace FlashCards
             }
         }
 
+        /// <summary>
+        /// Loads all cards for the current deck from the backend.
+        /// </summary>
         private async void getCards()
         {
             try
             {
                 await createTokenHash();
 
-
-
                 using (HttpClient requestClient = new HttpClient())
                 {
-                    var responseData = await sendRequest.SendRequest(requestClient, "getCards", _user, hashedToken, sessionID, _deckId.ToString());
+                    var responseData = await sendRequest.SendRequest(
+                        requestClient,
+                        "getCards",
+                        _user,
+                        hashedToken,
+                        sessionID,
+                        _deckId.ToString()
+                    );
 
-                    allCards = JsonConvert.DeserializeObject<List<CardList>>(responseData.ToString());
+                    allCards = JsonConvert.DeserializeObject<List<CardList>>(
+                        responseData.ToString()
+                    );
                     filteredCards = new List<CardList>(allCards);
                     this.DataContext = filteredCards;
                 }
@@ -136,28 +174,59 @@ namespace FlashCards
             }
         }
 
+        /// <summary>
+        /// Opens the window to add a new card.
+        /// </summary>
         private void AddCardButton_Click(object sender, RoutedEventArgs e)
         {
-            var addCardWindow = new AddCards(this.Left, this.Top, this.Width, this.Height, this.WindowState, _deckId);
+            var addCardWindow = new AddCards(
+                this.Left,
+                this.Top,
+                this.Width,
+                this.Height,
+                this.WindowState,
+                _deckId
+            );
             addCardWindow.Show();
             this.Close();
         }
 
-
+        /// <summary>
+        /// Opens the learning window for the current deck.
+        /// </summary>
         private void LearnButton_Click(object sender, RoutedEventArgs e)
         {
-            var learnWindow = new LearnDeck(this.Left, this.Top, this.Width, this.Height, this.WindowState, _deckId);
+            var learnWindow = new LearnDeck(
+                this.Left,
+                this.Top,
+                this.Width,
+                this.Height,
+                this.WindowState,
+                _deckId
+            );
             learnWindow.Show();
             this.Close();
         }
 
+        /// <summary>
+        /// Returns to the main index window.
+        /// </summary>
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            var indexWindow = new Index(this.Left, this.Top, this.Width, this.Height, this.WindowState);
+            var indexWindow = new Index(
+                this.Left,
+                this.Top,
+                this.Width,
+                this.Height,
+                this.WindowState
+            );
             indexWindow.Show();
             this.Close();
         }
 
+        /// <summary>
+        /// Filters cards based on search input.
+        /// </summary>
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             FilterCards();
@@ -177,7 +246,8 @@ namespace FlashCards
 
         private void FilterCards()
         {
-            if (allCards == null) return;
+            if (allCards == null)
+                return;
 
             string searchText = SearchBox.Text.Trim().ToLower();
             if (string.IsNullOrEmpty(searchText))
@@ -187,11 +257,12 @@ namespace FlashCards
             else
             {
                 filteredCards = allCards
-                    .Where(card => card.question != null && card.question.ToLower().Contains(searchText))
+                    .Where(card =>
+                        card.question != null && card.question.ToLower().Contains(searchText)
+                    )
                     .ToList();
             }
             this.DataContext = filteredCards;
         }
-
     }
 }

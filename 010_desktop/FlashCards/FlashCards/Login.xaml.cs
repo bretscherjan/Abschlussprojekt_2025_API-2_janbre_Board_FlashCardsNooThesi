@@ -1,5 +1,12 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿/**
+ * Login.xaml.cs
+ *
+ * Handles user authentication, login logic, and navigation to registration or main index.
+ *
+ * Author: Jan Bretscher
+ * Created: June 27, 2025
+ * Version: 3.3
+ */
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +21,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace FlashCards
 {
@@ -34,6 +43,9 @@ namespace FlashCards
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Verifies the user's credentials and logs in if successful.
+        /// </summary>
         private async void verifyAccount()
         {
             try
@@ -51,7 +63,14 @@ namespace FlashCards
 
                 using (HttpClient requestClient = new HttpClient())
                 {
-                    var responseData = await sendRequest.SendRequest(requestClient, "verifyAccount", _user, hashedToken, sessionID, "0");
+                    var responseData = await sendRequest.SendRequest(
+                        requestClient,
+                        "verifyAccount",
+                        _user,
+                        hashedToken,
+                        sessionID,
+                        "0"
+                    );
 
                     if (responseData is bool && (bool)responseData == true)
                     {
@@ -65,10 +84,13 @@ namespace FlashCards
                     }
                     else
                     {
-                        MessageBox.Show("Login fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldedaten.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(
+                            "Login fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldedaten.",
+                            "Fehler",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error
+                        );
                     }
-
-
                 }
             }
             catch (Exception ex)
@@ -77,6 +99,9 @@ namespace FlashCards
             }
         }
 
+        /// <summary>
+        /// Opens the registration window.
+        /// </summary>
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
             var registerWindow = new Register();
@@ -84,6 +109,9 @@ namespace FlashCards
             this.Close();
         }
 
+        /// <summary>
+        /// Initiates the login process.
+        /// </summary>
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             _password = generateHash.GenerateSHA256Hash(password.Password);

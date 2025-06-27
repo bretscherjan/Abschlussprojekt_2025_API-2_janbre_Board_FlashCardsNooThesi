@@ -1,4 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿/**
+ * LearnDeck.xaml.cs
+ *
+ * Manages the learning session for a deck, including card display, answer checking, and progress tracking.
+ *
+ * Author: Jan Bretscher
+ * Created: June 27, 2025
+ * Version: 3.3
+ */
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +20,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using Newtonsoft.Json;
 
 namespace FlashCards
 {
@@ -44,12 +53,18 @@ namespace FlashCards
         private List<Cards> allCards;
         private List<Cards> filteredCards;
 
-
         private int currentCardIndex = 0;
         private List<bool> results = new List<bool>();
         private Cards currentCard => filteredCards[currentCardIndex];
 
-        public LearnDeck(double left, double top, double width, double height, WindowState state, int deckId)
+        public LearnDeck(
+            double left,
+            double top,
+            double width,
+            double height,
+            WindowState state,
+            int deckId
+        )
         {
             InitializeComponent();
 
@@ -63,9 +78,7 @@ namespace FlashCards
             this.Height = height;
             this.WindowState = state;
             _deckId = deckId;
-
         }
-
 
         private void InitializeBasicUI()
         {
@@ -87,7 +100,9 @@ namespace FlashCards
             }
         }
 
-
+        /// <summary>
+        /// Loads all cards for the current learning session.
+        /// </summary>
         private async Task getCards()
         {
             try
@@ -105,7 +120,14 @@ namespace FlashCards
 
                 using (HttpClient requestClient = new HttpClient())
                 {
-                    var responseData = await sendRequest.SendRequest(requestClient, "getCards", _user, hashedToken, sessionID, _deckId.ToString());
+                    var responseData = await sendRequest.SendRequest(
+                        requestClient,
+                        "getCards",
+                        _user,
+                        hashedToken,
+                        sessionID,
+                        _deckId.ToString()
+                    );
 
                     allCards = JsonConvert.DeserializeObject<List<Cards>>(responseData.ToString());
                     filteredCards = new List<Cards>(allCards);
@@ -118,9 +140,13 @@ namespace FlashCards
             }
         }
 
+        /// <summary>
+        /// Displays the current card in the UI.
+        /// </summary>
         private void LoadCurrentCard()
         {
-            if (filteredCards == null || filteredCards.Count == 0) return;
+            if (filteredCards == null || filteredCards.Count == 0)
+                return;
 
             QuestionTextBlock.Text = currentCard.question;
 
@@ -157,13 +183,18 @@ namespace FlashCards
             ProgressTextBlock.Text = $"{currentCardIndex + 1} / {filteredCards.Count}";
         }
 
+        /// <summary>
+        /// Checks the user's answer and updates the result list.
+        /// </summary>
         private void CheckAnswer(string userAnswer)
         {
             bool isCorrect = false;
 
             if (currentCard.type == "card")
             {
-                isCorrect = userAnswer.Trim().Equals(currentCard.answer, StringComparison.OrdinalIgnoreCase);
+                isCorrect = userAnswer
+                    .Trim()
+                    .Equals(currentCard.answer, StringComparison.OrdinalIgnoreCase);
             }
             else if (currentCard.type == "quiz")
             {
@@ -184,10 +215,22 @@ namespace FlashCards
             }
         }
 
+        /// <summary>
+        /// Shows the evaluation window after the session.
+        /// </summary>
         private void ShowEvaluation()
         {
             // Übergibt die Ergebnisse UND die originalen Karten
-            var auswertungWindow = new AuswertungLernen(this.Left, this.Top, this.Width, this.Height, this.WindowState, results, filteredCards, _deckId);
+            var auswertungWindow = new AuswertungLernen(
+                this.Left,
+                this.Top,
+                this.Width,
+                this.Height,
+                this.WindowState,
+                results,
+                filteredCards,
+                _deckId
+            );
             auswertungWindow.Show();
             this.Close();
         }
@@ -227,11 +270,16 @@ namespace FlashCards
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            var deckWindow = new Deck(this.Left, this.Top, this.Width, this.Height, this.WindowState, _deckId);
+            var deckWindow = new Deck(
+                this.Left,
+                this.Top,
+                this.Width,
+                this.Height,
+                this.WindowState,
+                _deckId
+            );
             deckWindow.Show();
             this.Close();
         }
-
-
     }
 }

@@ -1,7 +1,15 @@
-﻿using Newtonsoft.Json;
+﻿/**
+ * FileImpExp.xaml.cs
+ *
+ * Handles import and export of card data, including CSV/JSON conversion and API communication for a deck.
+ *
+ * Author: Jan Bretscher
+ * Created: June 27, 2025
+ * Version: 3.3
+ */
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -12,10 +20,10 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Newtonsoft.Json;
 
 namespace FlashCards
 {
-
     public class CardExportModel
     {
         public List<NormalCardExport> normalCards { get; set; }
@@ -42,8 +50,6 @@ namespace FlashCards
         public string status { get; set; }
     }
 
-
-
     public class CardsImpExp
     {
         public string title { get; set; }
@@ -61,7 +67,6 @@ namespace FlashCards
         public string created_at { get; set; }
     }
 
-
     public partial class FileImpExp : Window
     {
         private string token;
@@ -76,7 +81,14 @@ namespace FlashCards
 
         private readonly HttpClient _httpClient;
 
-        public FileImpExp(double left, double top, double width, double height, WindowState state, string deckId)
+        public FileImpExp(
+            double left,
+            double top,
+            double width,
+            double height,
+            WindowState state,
+            string deckId
+        )
         {
             InitializeComponent();
             getCards();
@@ -91,11 +103,6 @@ namespace FlashCards
 
             _deckId = deckId;
         }
-
-
-
-
-
 
         private async void FavoriteButton_Click(object sender, RoutedEventArgs e)
         {
@@ -117,7 +124,17 @@ namespace FlashCards
 
                     using (HttpClient requestClient = new HttpClient())
                     {
-                        var responseData = await sendRequest.SendRequest(requestClient, "updateCardFavorite", _user, hashedToken, sessionID, _deckId.ToString(), cardId.ToString(), card.is_fav.ToString(), card.type.ToString());
+                        var responseData = await sendRequest.SendRequest(
+                            requestClient,
+                            "updateCardFavorite",
+                            _user,
+                            hashedToken,
+                            sessionID,
+                            _deckId.ToString(),
+                            cardId.ToString(),
+                            card.is_fav.ToString(),
+                            card.type.ToString()
+                        );
 
                         Console.WriteLine(responseData.message);
                     }
@@ -128,7 +145,6 @@ namespace FlashCards
                 Console.WriteLine($"Error updating favorite: {ex.Message}");
             }
         }
-
 
         private async Task createTokenHash()
         {
@@ -151,7 +167,6 @@ namespace FlashCards
             }
         }
 
-
         private async void getCards()
         {
             try
@@ -160,9 +175,18 @@ namespace FlashCards
 
                 using (HttpClient requestClient = new HttpClient())
                 {
-                    var responseData = await sendRequest.SendRequest(requestClient, "getCards", _user, hashedToken, sessionID, _deckId.ToString());
+                    var responseData = await sendRequest.SendRequest(
+                        requestClient,
+                        "getCards",
+                        _user,
+                        hashedToken,
+                        sessionID,
+                        _deckId.ToString()
+                    );
 
-                    allCards = JsonConvert.DeserializeObject<List<CardsImpExp>>(responseData.ToString());
+                    allCards = JsonConvert.DeserializeObject<List<CardsImpExp>>(
+                        responseData.ToString()
+                    );
                     filteredCards = new List<CardsImpExp>(allCards);
                     this.DataContext = filteredCards;
                 }
@@ -173,7 +197,9 @@ namespace FlashCards
             }
         }
 
-
+        /// <summary>
+        /// Sends imported cards to the backend.
+        /// </summary>
         private async Task SendImportedCards(string jsonContent)
         {
             try
@@ -189,22 +215,39 @@ namespace FlashCards
                 hashedToken = generateHash.GenerateSHA256Hash(token, _salt, _password);
                 Console.WriteLine($"Hashed Token + baseCode + password: {hashedToken}");
 
-                await postData.SendCardsAsync(_httpClient, "importCards", jsonContent, _user, hashedToken, sessionID, _deckId.ToString());
-
+                await postData.SendCardsAsync(
+                    _httpClient,
+                    "importCards",
+                    jsonContent,
+                    _user,
+                    hashedToken,
+                    sessionID,
+                    _deckId.ToString()
+                );
             }
             catch (HttpRequestException ex)
             {
-                MessageBox.Show($"Error sending data: {ex.Message}", "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(
+                    $"Error sending data: {ex.Message}",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occurred: {ex.Message}", "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(
+                    $"An error occurred: {ex.Message}",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
             }
         }
 
-
+        /// <summary>
+        /// Handles the import of cards from a file (CSV/JSON).
+        /// </summary>
         private async void importCards()
         {
             // Configure open file dialog box
@@ -212,7 +255,8 @@ namespace FlashCards
             {
                 FileName = "cards",
                 DefaultExt = ".json",
-                Filter = "All supported files (*.json;*.csv)|*.json;*.csv|JSON files (*.json)|*.json|CSV files (*.csv)|*.csv"
+                Filter =
+                    "All supported files (*.json;*.csv)|*.json;*.csv|JSON files (*.json)|*.json|CSV files (*.csv)|*.csv",
             };
 
             bool? result = dialog.ShowDialog();
@@ -222,10 +266,8 @@ namespace FlashCards
                 string filePath = dialog.FileName;
                 string extension = System.IO.Path.GetExtension(filePath)?.ToLower();
 
-
                 try
                 {
-
                     string jsonContent = string.Empty;
 
                     if (extension == ".csv")
@@ -235,7 +277,6 @@ namespace FlashCards
 
                     if (extension == ".json")
                     {
-
                         string filename = dialog.FileName;
                         jsonContent = File.ReadAllText(filename);
                     }
@@ -245,20 +286,32 @@ namespace FlashCards
                         await SendImportedCards(jsonContent);
 
                         getCards();
-
                     }
                     else
                     {
-                        MessageBox.Show("No valid cards found in the file.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(
+                            "No valid cards found in the file.",
+                            "Error",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error
+                        );
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error importing cards: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(
+                        $"Error importing cards: {ex.Message}",
+                        "Error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
                 }
             }
         }
 
+        /// <summary>
+        /// Converts the current card list to CSV format.
+        /// </summary>
         private string ConvertCardsToCsv()
         {
             var csvBuilder = new StringBuilder();
@@ -275,15 +328,22 @@ namespace FlashCards
 
                 if (type == "quiz")
                 {
-                    options = EscapeCsvField($"{card.first_option ?? ""},{card.second_option ?? ""},{card.third_option ?? ""},{card.fourth_option ?? ""}");
+                    options = EscapeCsvField(
+                        $"{card.first_option ?? ""},{card.second_option ?? ""},{card.third_option ?? ""},{card.fourth_option ?? ""}"
+                    );
                 }
 
-                csvBuilder.AppendLine($"{type};{question};{correctAnswerIndex};{answer};{options};{isFav.ToString().ToLower()}");
+                csvBuilder.AppendLine(
+                    $"{type};{question};{correctAnswerIndex};{answer};{options};{isFav.ToString().ToLower()}"
+                );
             }
 
             return csvBuilder.ToString();
         }
 
+        /// <summary>
+        /// Escapes special characters for CSV export.
+        /// </summary>
         private string EscapeCsvField(string field)
         {
             if (string.IsNullOrEmpty(field))
@@ -300,14 +360,17 @@ namespace FlashCards
             return field;
         }
 
-
+        /// <summary>
+        /// Handles the export of cards to a file.
+        /// </summary>
         private void exportCards()
         {
             var dialog = new Microsoft.Win32.SaveFileDialog
             {
                 FileName = $"cards{_deckId}",
                 DefaultExt = ".json",
-                Filter = "All supported files (*.json;*.csv)|*.json;*.csv|JSON files (*.json)|*.json|CSV files (*.csv)|*.csv"
+                Filter =
+                    "All supported files (*.json;*.csv)|*.json;*.csv|JSON files (*.json)|*.json|CSV files (*.csv)|*.csv",
             };
 
             bool? result = dialog.ShowDialog();
@@ -334,7 +397,7 @@ namespace FlashCards
                                 question = card.question,
                                 answer = card.answer,
                                 is_fav = card.is_fav == 1,
-                                status = card.status
+                                status = card.status,
                             })
                             .ToList();
 
@@ -350,7 +413,7 @@ namespace FlashCards
                                 option4 = card.fourth_option,
                                 correctIndex = card.correct_answer ?? 1,
                                 is_fav = card.is_fav == 1,
-                                status = card.status
+                                status = card.status,
                             })
                             .ToList();
 
@@ -358,21 +421,27 @@ namespace FlashCards
                         var exportData = new CardExportModel
                         {
                             normalCards = normalCards,
-                            quizCards = quizCards
+                            quizCards = quizCards,
                         };
 
-                        string jsonContent = JsonConvert.SerializeObject(exportData, Formatting.Indented);
+                        string jsonContent = JsonConvert.SerializeObject(
+                            exportData,
+                            Formatting.Indented
+                        );
                         File.WriteAllText(dialog.FileName, jsonContent);
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error exporting cards: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(
+                        $"Error exporting cards: {ex.Message}",
+                        "Error",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
                 }
             }
         }
-
-
 
         private void ImportButton_Click(object sender, RoutedEventArgs e)
         {
@@ -386,7 +455,13 @@ namespace FlashCards
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            var indexWindow = new Index(this.Left, this.Top, this.Width, this.Height, this.WindowState);
+            var indexWindow = new Index(
+                this.Left,
+                this.Top,
+                this.Width,
+                this.Height,
+                this.WindowState
+            );
             indexWindow.Show();
             this.Close();
         }
@@ -408,9 +483,13 @@ namespace FlashCards
             this.DataContext = filteredCards;
         }
 
+        /// <summary>
+        /// Filters the card list based on search input.
+        /// </summary>
         private void FilterCards()
         {
-            if (allCards == null) return;
+            if (allCards == null)
+                return;
 
             string searchText = SearchBox.Text.Trim().ToLower();
             if (string.IsNullOrEmpty(searchText))
@@ -420,11 +499,12 @@ namespace FlashCards
             else
             {
                 filteredCards = allCards
-                    .Where(card => card.question != null && card.question.ToLower().Contains(searchText))
+                    .Where(card =>
+                        card.question != null && card.question.ToLower().Contains(searchText)
+                    )
                     .ToList();
             }
             this.DataContext = filteredCards;
         }
-
     }
 }
