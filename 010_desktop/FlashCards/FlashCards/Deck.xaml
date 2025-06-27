@@ -1,10 +1,6 @@
 ﻿<Window x:Class="FlashCards.Deck"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        BorderBrush="#dfaa30"
-        Icon="/favicon.ico"
-        BorderThickness="1"
-        Title="Deck" Height="600" Width="800" Background="#2f2f2f">
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" BorderBrush="#dfaa30" Icon="/favicon.ico" BorderThickness="1" Title="Deck" Height="600" Width="800" Background="#2f2f2f">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" MinHeight="59.6"/>
@@ -17,11 +13,7 @@
 
         <!-- Header mit Titel -->
         <Border Grid.Row="0" Background="#252525" Padding="15" Margin="3,3,3,3">
-            <TextBlock Text="Cards" 
-                       FontSize="20" 
-                       FontWeight="Bold" 
-                       Foreground="#dfaa30"
-                       HorizontalAlignment="Center"/>
+            <TextBlock Text="Cards" FontSize="20" FontWeight="Bold" Foreground="#dfaa30" HorizontalAlignment="Center"/>
         </Border>
 
         <!-- Suchfeld & Karten hinzufügen -->
@@ -35,37 +27,10 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBox x:Name="SearchBox" Grid.Column="0"
-                 Width="300"
-                 Height="30"
-                 Margin="5"
-                 TextChanged="SearchBox_TextChanged"
-                 Background="#3f3f3f"
-                 Foreground="White"
-                 BorderBrush="#dfaa30"
-                 Padding="5"/>
-                <Button Cursor="Hand" Content="Suchen" Grid.Column="1"
-                Width="80"
-                Height="30"
-                Margin="5"
-                Click="SearchButton_Click"
-                Background="#dfaa30"
-                Foreground="White"/>
-                <Button Cursor="Hand" Content="Zurücksetzen" Grid.Column="2"
-                Width="80"
-                Height="30"
-                Margin="5"
-                Click="ResetButton_Click"
-                Background="#dfaa30"
-                Foreground="White"/>
-                <Button Cursor="Hand" Content="Karten hinzufügen" Grid.Column="4"
-                Width="120"
-                Height="30"
-                Margin="5"
-                Click="AddCardButton_Click"
-                HorizontalAlignment="Right"
-                Background="#dfaa30"
-                Foreground="White"/>
+                <TextBox x:Name="SearchBox" Grid.Column="0" Width="300" Height="30" Margin="5" TextChanged="SearchBox_TextChanged" Background="#3f3f3f" Foreground="White" BorderBrush="#dfaa30" Padding="5"/>
+                <Button Cursor="Hand" Content="Suchen" Grid.Column="1" Width="80" Height="30" Margin="5" Click="SearchButton_Click" Background="#dfaa30" Foreground="White"/>
+                <Button Cursor="Hand" Content="Zurücksetzen" Grid.Column="2" Width="80" Height="30" Margin="5" Click="ResetButton_Click" Background="#dfaa30" Foreground="White"/>
+                <Button Cursor="Hand" Content="Karten hinzufügen" Grid.Column="4" Width="120" Height="30" Margin="5" Click="AddCardButton_Click" HorizontalAlignment="Right" Background="#dfaa30" Foreground="White"/>
             </Grid>
         </Border>
 
@@ -73,25 +38,13 @@
             <ItemsControl ItemsSource="{Binding}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderBrush="#dfaa30" 
-                                BorderThickness="1" 
-                                CornerRadius="6" 
-                                Margin="10" 
-                                Padding="12" 
-                                Background="#252525">
+                        <Border BorderBrush="#dfaa30" BorderThickness="1" CornerRadius="6" Margin="10" Padding="12" Background="#252525">
                             <StackPanel>
                                 <!-- Frage -->
-                                <TextBlock Text="{Binding question}" 
-                                           FontWeight="Bold" 
-                                           FontSize="16" 
-                                           Foreground="#dfaa30"
-                                           Margin="0,0,0,5"/>
+                                <TextBlock Text="{Binding question}" FontWeight="Bold" FontSize="16" Foreground="#dfaa30" Margin="0,0,0,5"/>
 
                                 <!-- Antwort (nur für Karten vom Typ 'card') -->
-                                <TextBlock Text="{Binding answer}" 
-                                           Margin="0,6,0,0" 
-                                           FontSize="14" 
-                                           Foreground="#e0e0e0">
+                                <TextBlock Text="{Binding answer}" Margin="0,6,0,0" FontSize="14" Foreground="#e0e0e0">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Setter Property="Visibility" Value="Visible"/>
@@ -117,9 +70,7 @@
                                         </Style>
                                     </StackPanel.Style>
 
-                                    <TextBlock Text="{Binding first_option}" 
-                                               FontSize="14" 
-                                               Margin="0,2,0,0">
+                                    <TextBlock Text="{Binding first_option}" FontSize="14" Margin="0,2,0,0">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="Foreground" Value="#e0e0e0"/>
@@ -133,9 +84,7 @@
                                         </TextBlock.Style>
                                     </TextBlock>
 
-                                    <TextBlock Text="{Binding second_option}" 
-                                               FontSize="14" 
-                                               Margin="0,2,0,0">
+                                    <TextBlock Text="{Binding second_option}" FontSize="14" Margin="0,2,0,0">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="Foreground" Value="#e0e0e0"/>
@@ -149,9 +98,7 @@
                                         </TextBlock.Style>
                                     </TextBlock>
 
-                                    <TextBlock Text="{Binding third_option}" 
-                                               FontSize="14" 
-                                               Margin="0,2,0,0">
+                                    <TextBlock Text="{Binding third_option}" FontSize="14" Margin="0,2,0,0">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="Foreground" Value="#e0e0e0"/>
@@ -165,9 +112,7 @@
                                         </TextBlock.Style>
                                     </TextBlock>
 
-                                    <TextBlock Text="{Binding fourth_option}" 
-                                               FontSize="14" 
-                                               Margin="0,2,0,0">
+                                    <TextBlock Text="{Binding fourth_option}" FontSize="14" Margin="0,2,0,0">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
                                                 <Setter Property="Foreground" Value="#e0e0e0"/>
@@ -184,17 +129,8 @@
 
                                 <!-- Metadaten -->
                                 <StackPanel Orientation="Horizontal" Margin="0,12,0,0">
-                                    <TextBlock Text="Favorit: " 
-                                               FontWeight="SemiBold" 
-                                               Foreground="#dfaa30"/>
-                                    <Button x:Name="FavoriteButton" 
-                                            Background="Transparent" 
-                                            BorderThickness="0" 
-                                            Padding="0" 
-                                            Margin="0,-2,0,0"
-                                            Click="FavoriteButton_Click"
-                                            Tag="{Binding id}"
-                                            Cursor="Hand">
+                                    <TextBlock Text="Favorit: " FontWeight="SemiBold" Foreground="#dfaa30"/>
+                                    <Button x:Name="FavoriteButton" Background="Transparent" BorderThickness="0" Padding="0" Margin="0,-2,0,0" Click="FavoriteButton_Click" Tag="{Binding id}" Cursor="Hand">
                                         <!-- Style entfernt Hover- und Pressed-Effekte -->
                                         <Button.Style>
                                             <Style TargetType="Button">
@@ -210,8 +146,7 @@
                                         </Button.Style>
                                         <Button.Content>
                                             <!-- Stern-Symbol (Pfad) mit DataTrigger für is_fav -->
-                                            <Path x:Name="FavoriteStar" 
-                                                  Data="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z">
+                                            <Path x:Name="FavoriteStar" Data="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z">
                                                 <!-- Standardfarbe (wenn is_fav = 0) -->
                                                 <Path.Style>
                                                     <Style TargetType="Path">
@@ -238,7 +173,7 @@
             </ItemsControl>
         </ScrollViewer>
         <Border Grid.Row="3" Background="#252525" Padding="10">
-            <Button Cursor="Hand" x:Name="learn" Content="Learn this Deck" Background="#dfaa30" Foreground="#2f2f2f" FontSize="16" FontWeight="Bold" Height="50" BorderThickness="0"  Click="LearnButton_Click"/>
+            <Button Cursor="Hand" x:Name="learn" Content="Learn this Deck" Background="#dfaa30" Foreground="#2f2f2f" FontSize="16" FontWeight="Bold" Height="50" BorderThickness="0" Click="LearnButton_Click"/>
         </Border>
         <Border Grid.Row="4" Background="#252525" Padding="10">
             <Button Cursor="Hand" x:Name="Back" Content="Back" Click="BackButton_Click" Background="#3a3a3a" Foreground="#dfaa30" FontSize="16" FontWeight="Bold" Height="50" BorderThickness="1" BorderBrush="#555" />

@@ -38,6 +38,9 @@ namespace FlashCards
             _httpClient = new HttpClient();
         }
 
+        /// <summary>
+        /// Registers a new user with the provided credentials.
+        /// </summary>
         private async void registerUser()
         {
             try
@@ -76,6 +79,9 @@ namespace FlashCards
             }
         }
 
+        /// <summary>
+        /// Handles the registration button click and validates input.
+        /// </summary>
         private void RegisterButton_Click(object sender, RoutedEventArgs e)
         {
             string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
@@ -104,6 +110,9 @@ namespace FlashCards
             registerUser();
         }
 
+        /// <summary>
+        /// Switches to the login window.
+        /// </summary>
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             var loginWindow = new Login();

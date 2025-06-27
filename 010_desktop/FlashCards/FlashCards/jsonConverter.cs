@@ -1,15 +1,25 @@
-﻿using System;
+﻿/**
+ * jsonConverter.cs
+ *
+ * Converts card data between CSV and JSON formats for import/export functionality.
+ *
+ * Author: Jan Bretscher
+ * Created: June 27, 2025
+ * Version: 3.3
+ */
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
 using System.Linq;
+using System.Text.Json;
 
 namespace FlashCards
 {
-
-
     public class CardConverter
     {
+        /// <summary>
+        /// Converts a CSV file with card data to a JSON string.
+        /// </summary>
         public static string ConvertCsvToJson(string csvPath)
         {
             var lines = File.ReadAllLines(csvPath);
@@ -18,10 +28,12 @@ namespace FlashCards
 
             foreach (var line in lines)
             {
-                if (string.IsNullOrWhiteSpace(line)) continue;
+                if (string.IsNullOrWhiteSpace(line))
+                    continue;
 
                 var parts = line.Split(';');
-                if (parts.Length < 6) continue;
+                if (parts.Length < 6)
+                    continue;
 
                 string type = parts[0].Trim();
                 string question = parts[1].Trim();
@@ -32,43 +44,46 @@ namespace FlashCards
 
                 if (type == "card")
                 {
-                    normalCards.Add(new NormalCard
-                    {
-                        question = question,
-                        answer = answer,
-                        is_fav = isFav,
-                        status = "0"
-                    });
+                    normalCards.Add(
+                        new NormalCard
+                        {
+                            question = question,
+                            answer = answer,
+                            is_fav = isFav,
+                            status = "0",
+                        }
+                    );
                 }
                 else if (type == "quiz")
                 {
                     var opts = options.Split(',').Select(o => o.Trim()).ToArray();
-                    if (opts.Length < 4) continue; // ensure 4 options
+                    if (opts.Length < 4)
+                        continue; // ensure 4 options
                     int correctIndex = int.TryParse(correctIndexStr, out var i) ? i : 0;
 
-                    quizCards.Add(new QuizCard
-                    {
-                        question = question,
-                        option1 = opts[0],
-                        option2 = opts[1],
-                        option3 = opts[2],
-                        option4 = opts[3],
-                        correctIndex = correctIndex,
-                        is_fav = isFav,
-                        status = "0"
-                    });
+                    quizCards.Add(
+                        new QuizCard
+                        {
+                            question = question,
+                            option1 = opts[0],
+                            option2 = opts[1],
+                            option3 = opts[2],
+                            option4 = opts[3],
+                            correctIndex = correctIndex,
+                            is_fav = isFav,
+                            status = "0",
+                        }
+                    );
                 }
             }
 
-            var result = new
-            {
-                normalCards,
-                quizCards
-            };
+            var result = new { normalCards, quizCards };
 
-            return JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true });
+            return JsonSerializer.Serialize(
+                result,
+                new JsonSerializerOptions { WriteIndented = true }
+            );
         }
-
 
         public class NormalCard
         {
@@ -90,5 +105,4 @@ namespace FlashCards
             public string status { get; set; }
         }
     }
-
 }

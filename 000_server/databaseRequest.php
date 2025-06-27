@@ -1,5 +1,16 @@
 <?php
-// Logfile-Path:/var/www/owncloud/data/jan/files/jan-bretscher/01_zli/FlashCards/log.txt
+/**
+ * databaseRequest.php
+ *
+ * Handles database connection and query execution for the application.
+ * This script establishes a secure connection to a MySQL database
+ * and provides a function for executing SQL statements with optional parameters.
+ *
+ * Author: Jan Bretscher
+ * Created: June 27, 2025
+ * Version: 3.3
+ */
+
 
 $mysql_host = 'herkules.net.letsbuild.ch:3306';
 $mysql_user = 'jan';
@@ -26,6 +37,7 @@ $isFav = $_GET['isFav'] ?? null;
 $type = $_GET['type'] ?? null;
 
 $collaborator = $_GET['collaborator'] ?? null;
+$follow = $_GET['follow'] ?? null;
 
 $baseCode = '4gdrsh92z7';
 header('Content-Type: application/json');
@@ -201,12 +213,16 @@ if ($action === 'getData') {
             $result = getCards($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $deckId, $fh);
             break;
 
-        case 'getUsersCollaborator':
-            $result = getUsers($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, 'collaborator', $fh);
+        case 'getUsersFollowers':
+            $result = getUsers($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, 'followers', $fh);
             break;
 
-        case 'getUsersFollow':
-            $result = getUsers($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, 'follow', $fh);
+        case 'getUsersFollowing':
+            $result = getUsers($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, 'following', $fh);
+            break;
+
+        case 'getUsersNotFollowing':
+            $result = getUsers($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, 'notFollowing', $fh);
             break;
 
         case 'deleteDeck':
@@ -221,6 +237,10 @@ if ($action === 'getData') {
         
         case 'addCards':
             $result = addCards($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $deckId, $requestMessage, $fh);
+            break;
+        
+        case 'addFollow':
+            $result = addFollow($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $follow, $fh);
             break;
 
         case 'importCards':
@@ -466,7 +486,7 @@ function getCards($mysql_host, $mysql_user, $mysql_password, $mysql_database, $u
 function getUsers($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $type, $fh) {
     $dbh = createDatabaseConnection($mysql_host, $mysql_user, $mysql_password, $mysql_database, $fh);
     
-    if ($type == 'collaborator') {
+    if ($type == 'followers') {
         $sql = "SELECT u.username 
                 FROM users u
                 JOIN follows f ON u.id = f.follower_id
@@ -480,17 +500,28 @@ function getUsers($mysql_host, $mysql_user, $mysql_password, $mysql_database, $u
         }
 
         mysqli_stmt_bind_param($stmt, "ss", $user, $user);
-    } else if ($type == 'follow') {
+    } else if ($type == 'notFollowing') {
 
         $sql = "SELECT u.username 
                 FROM users u
-                WHERE u.id != (SELECT id FROM users WHERE username = ?)
-                AND NOT EXISTS (
-                    SELECT 1 
-                    FROM follows f 
-                    WHERE f.follower_id = (SELECT id FROM users WHERE username = ?)
-                    AND f.followed_id = u.id
-                )";
+                LEFT JOIN follows f ON u.id = f.followed_id AND f.follower_id = (SELECT id FROM users WHERE username = ?)
+                WHERE f.followed_id IS NULL 
+                AND u.username != ?";
+
+        $stmt = mysqli_prepare($dbh, $sql);
+
+        if (!$stmt) {
+            mysqli_close($dbh);
+            return ['error' => 'SQL Prepare fehlgeschlagen'];
+        }
+
+        mysqli_stmt_bind_param($stmt, "ss", $user, $user);
+    } else if ($type == 'following') {
+
+        $sql = "SELECT u.username 
+                FROM users u
+                JOIN follows f ON u.id = f.followed_id
+                WHERE f.follower_id = (SELECT id FROM users WHERE username = ?) AND username != ?";
 
         $stmt = mysqli_prepare($dbh, $sql);
 
@@ -675,14 +706,17 @@ function addDeck($mysql_host, $mysql_user, $mysql_password, $mysql_database, $us
         if ($stmt2 && mysqli_stmt_bind_param($stmt2, "iss", $deckId, $startColor, $endColor) && mysqli_stmt_execute($stmt2)) {
             mysqli_stmt_close($stmt2);
 
-            $sql3 = "INSERT INTO collaborators (deck_id, user_id) VALUES (?, (SELECT id FROM users WHERE username = ?))";
-            $stmt3 = mysqli_prepare($dbh, $sql3);
+            if ($collaborator != null) {
+                $sql3 = "INSERT INTO collaborators (deck_id, user_id) VALUES (?, (SELECT id FROM users WHERE username = ?))";
+                $stmt3 = mysqli_prepare($dbh, $sql3);
 
-            if ($stmt3 && mysqli_stmt_bind_param($stmt3, "is", $deckId, $collaborator) && mysqli_stmt_execute($stmt3)) {
-                mysqli_stmt_close($stmt3);
-            } else {
-                $error = 'Fehler beim Hinzufügen von Mitarbeitern: ' . ($stmt3 ? mysqli_stmt_error($stmt3) : mysqli_error($dbh));
+                if ($stmt3 && mysqli_stmt_bind_param($stmt3, "is", $deckId, $collaborator) && mysqli_stmt_execute($stmt3)) {
+                    mysqli_stmt_close($stmt3);
+                } else {
+                    $error = 'Fehler beim Hinzufügen von Mitarbeitern: ' . ($stmt3 ? mysqli_stmt_error($stmt3) : mysqli_error($dbh));
+                }
             }
+
         } else {
             $error = 'Fehler beim Hinzufügen der Deck-Farben: ' . ($stmt2 ? mysqli_stmt_error($stmt2) : mysqli_error($dbh));
         }
@@ -696,6 +730,54 @@ function addDeck($mysql_host, $mysql_user, $mysql_password, $mysql_database, $us
         ? ['error' => $error] 
         : ['success' => true, 'deckId' => $deckId];
 }
+
+
+//////////////////////////////////////////////////////////////////////
+// function addFollow
+//////////////////////////////////////////////////////////////////////
+
+function addFollow($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $follow, $fh) {
+    // Datenbankverbindung herstellen
+    $dbh = createDatabaseConnection($mysql_host, $mysql_user, $mysql_password, $mysql_database, $fh);
+    
+    if (!$dbh) {
+        return ['error' => 'Fehler beim Herstellen der Datenbankverbindung'];
+    }
+
+    // Validierung der Eingabeparameter
+    if (empty($user) || empty($follow)) {
+        mysqli_close($dbh);
+        return ['error' => 'Benutzername oder Follower-ID fehlt'];
+    }
+
+    // SQL-Abfrage vorbereiten
+    $sql = "INSERT INTO follows (follower_id, followed_id) VALUES ((SELECT id FROM users WHERE username = ?), (SELECT id FROM users WHERE username = ?))";
+    $stmt = mysqli_prepare($dbh, $sql);
+    
+    if (!$stmt) {
+        $error = 'Fehler beim Vorbereiten der Abfrage: ' . mysqli_error($dbh);
+        mysqli_close($dbh);
+        return ['error' => $error];
+    }
+
+    // Parameter binden und ausführen
+    if (!mysqli_stmt_bind_param($stmt, "ss", $user, $follow) || !mysqli_stmt_execute($stmt)) {
+        $error = 'Fehler beim Ausführen der Abfrage: ' . mysqli_stmt_error($stmt);
+        mysqli_stmt_close($stmt);
+        mysqli_close($dbh);
+        return ['error' => $error];
+    }
+
+    // ID des eingefügten Datensatzes abrufen
+    $followId = mysqli_insert_id($dbh);
+    
+    // Statement und Verbindung schließen
+    mysqli_stmt_close($stmt);
+    mysqli_close($dbh);
+    
+    return ['success' => true, 'followId' => $followId];
+}
+
 
 //////////////////////////////////////////////////////////////////////
 // function addCards

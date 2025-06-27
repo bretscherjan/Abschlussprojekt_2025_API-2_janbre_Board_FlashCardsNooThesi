@@ -1,4 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿/**
+ * Index.xaml.cs
+ *
+ * Displays the main dashboard with deck overview, search, and navigation to deck details.
+ *
+ * Author: Jan Bretscher
+ * Created: June 27, 2025
+ * Version: 3.3
+ */
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +22,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 using System.Windows.Navigation;
+using Newtonsoft.Json;
 
 namespace FlashCards
 {
@@ -36,11 +45,13 @@ namespace FlashCards
         private string _salt = Properties.Settings.Default.salt;
         private string _user = Properties.Settings.Default.username;
         private string _password = Properties.Settings.Default.password;
+
         // private string _request = "getDecks";
         private List<DeckList> allDecks;
         private List<DeckList> filteredDecks;
 
-        public Index() : this(100, 100, 800, 450, WindowState.Normal)
+        public Index()
+            : this(100, 100, 800, 450, WindowState.Normal)
         {
             InitializeComponent();
             getDecks();
@@ -58,6 +69,9 @@ namespace FlashCards
             this.WindowState = state;
         }
 
+        /// <summary>
+        /// Loads all decks for the current user.
+        /// </summary>
         private async void getDecks()
         {
             try
@@ -75,9 +89,18 @@ namespace FlashCards
 
                 using (HttpClient requestClient = new HttpClient())
                 {
-                    var responseData = await sendRequest.SendRequest(requestClient, "getDecks", _user, hashedToken, sessionID, "0");
+                    var responseData = await sendRequest.SendRequest(
+                        requestClient,
+                        "getDecks",
+                        _user,
+                        hashedToken,
+                        sessionID,
+                        "0"
+                    );
 
-                    allDecks = JsonConvert.DeserializeObject<List<DeckList>>(responseData.ToString());
+                    allDecks = JsonConvert.DeserializeObject<List<DeckList>>(
+                        responseData.ToString()
+                    );
                     filteredDecks = new List<DeckList>(allDecks);
                     this.DataContext = filteredDecks;
                 }
@@ -88,6 +111,9 @@ namespace FlashCards
             }
         }
 
+        /// <summary>
+        /// Deletes a deck by its ID.
+        /// </summary>
         private async void deleteDeck(string _deckId)
         {
             try
@@ -105,7 +131,14 @@ namespace FlashCards
 
                 using (HttpClient requestClient = new HttpClient())
                 {
-                    var responseData = await sendRequest.SendRequest(requestClient, "deleteDeck", _user, hashedToken, sessionID, _deckId);
+                    var responseData = await sendRequest.SendRequest(
+                        requestClient,
+                        "deleteDeck",
+                        _user,
+                        hashedToken,
+                        sessionID,
+                        _deckId
+                    );
 
                     Console.WriteLine(responseData.toString());
                 }
@@ -116,7 +149,9 @@ namespace FlashCards
             }
         }
 
-
+        /// <summary>
+        /// Opens the import/export window for a deck.
+        /// </summary>
         private void ImpExpCardsDeck_Click(object sender, RoutedEventArgs e)
         {
             var menuItem = sender as MenuItem;
@@ -124,18 +159,34 @@ namespace FlashCards
 
             if (!string.IsNullOrEmpty(deckId))
             {
-                var fileImpExpWindow = new FileImpExp(this.Left, this.Top, this.Width, this.Height, this.WindowState, deckId);
+                var fileImpExpWindow = new FileImpExp(
+                    this.Left,
+                    this.Top,
+                    this.Width,
+                    this.Height,
+                    this.WindowState,
+                    deckId
+                );
                 fileImpExpWindow.Show();
                 this.Close();
             }
-
         }
 
+        /// <summary>
+        /// Opens the deck details window.
+        /// </summary>
         private void DeckButton_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button btn && btn.Tag is int deckId)
             {
-                var deckWindow = new Deck(this.Left, this.Top, this.Width, this.Height, this.WindowState, deckId);
+                var deckWindow = new Deck(
+                    this.Left,
+                    this.Top,
+                    this.Width,
+                    this.Height,
+                    this.WindowState,
+                    deckId
+                );
                 deckWindow.Show();
                 this.Close();
             }
@@ -158,9 +209,13 @@ namespace FlashCards
             this.DataContext = filteredDecks;
         }
 
+        /// <summary>
+        /// Filters the deck list based on search input.
+        /// </summary>
         private void FilterDecks()
         {
-            if (allDecks == null) return;
+            if (allDecks == null)
+                return;
 
             string searchText = SearchBox.Text.Trim().ToLower();
             if (string.IsNullOrEmpty(searchText))
@@ -187,7 +242,8 @@ namespace FlashCards
                     "Sind Sie sicher, dass Sie dieses Deck löschen möchten?",
                     "Deck löschen",
                     MessageBoxButton.YesNo,
-                    MessageBoxImage.Question);
+                    MessageBoxImage.Question
+                );
 
                 if (result == MessageBoxResult.Yes)
                 {
@@ -199,20 +255,29 @@ namespace FlashCards
 
         private void AddDeckButton_Click(object sender, RoutedEventArgs e)
         {
-            var createDeckWindow = new CreateDeck(this.Left, this.Top, this.Width, this.Height, this.WindowState);
+            var createDeckWindow = new CreateDeck(
+                this.Left,
+                this.Top,
+                this.Width,
+                this.Height,
+                this.WindowState
+            );
             createDeckWindow.Show();
             this.Close();
-
         }
 
         private void AcoountButton_Click(object sender, RoutedEventArgs e)
         {
-            var accountWindow = new Account(this.Left, this.Top, this.Width, this.Height, this.WindowState);
+            var accountWindow = new Account(
+                this.Left,
+                this.Top,
+                this.Width,
+                this.Height,
+                this.WindowState
+            );
             accountWindow.Show();
             this.Close();
         }
-
-
 
         /*private void EditDeck_Click(object sender, RoutedEventArgs e)
         {

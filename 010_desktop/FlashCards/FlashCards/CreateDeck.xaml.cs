@@ -1,6 +1,12 @@
-﻿using Dsafa.WpfColorPicker;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+﻿/**
+ * CreateDeck.xaml.cs
+ *
+ * Provides functionality for creating new decks, including color selection and collaborator management.
+ *
+ * Author: Jan Bretscher
+ * Created: June 27, 2025
+ * Version: 3.3
+ */
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,6 +24,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
+using Dsafa.WpfColorPicker;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace FlashCards
 {
@@ -30,7 +39,12 @@ namespace FlashCards
             return Brushes.Transparent;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object ConvertBack(
+            object value,
+            Type targetType,
+            object parameter,
+            CultureInfo culture
+        )
         {
             throw new NotImplementedException();
         }
@@ -41,15 +55,11 @@ namespace FlashCards
         public string username { get; set; }
     }
 
-
-
-
     /// <summary>
     /// Interaktionslogik für CreateDeck.xaml
     /// </summary>
     public partial class CreateDeck : Window, INotifyPropertyChanged
     {
-
         private string token;
         private string sessionID;
         private string hashedToken;
@@ -79,12 +89,10 @@ namespace FlashCards
             }
         }
 
-
         public event PropertyChangedEventHandler PropertyChanged;
+
         private void OnPropertyChanged(string propertyName) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-
 
         public CreateDeck(double left, double top, double width, double height, WindowState state)
         {
@@ -104,8 +112,9 @@ namespace FlashCards
         public SolidColorBrush FirstColorBrush => new SolidColorBrush(FirstColor);
         public SolidColorBrush SecondColorBrush => new SolidColorBrush(SecondColor);
 
-
-
+        /// <summary>
+        /// Loads the list of possible collaborators for a new deck.
+        /// </summary>
         private async void getUsers()
         {
             try
@@ -123,11 +132,19 @@ namespace FlashCards
 
                 using (HttpClient requestClient = new HttpClient())
                 {
-                    var responseData = await sendRequest.SendRequest(requestClient, "getUsersCollaborator", _user, hashedToken, sessionID, "0");
+                    var responseData = await sendRequest.SendRequest(
+                        requestClient,
+                        "getUsersFollowers",
+                        _user,
+                        hashedToken,
+                        sessionID,
+                        "0"
+                    );
 
-                    List<UserCollaborator> allUsers = JsonConvert.DeserializeObject<List<UserCollaborator>>(responseData.ToString());
+                    List<UserCollaborator> allUsers = JsonConvert.DeserializeObject<
+                        List<UserCollaborator>
+                    >(responseData.ToString());
                     BenutzerNamenListe = allUsers.Select(u => u.username).ToList();
-
                 }
             }
             catch (Exception ex)
@@ -136,13 +153,21 @@ namespace FlashCards
             }
         }
 
+        /// <summary>
+        /// Creates a new deck with the specified properties and collaborators.
+        /// </summary>
         private async void createDeck()
         {
             try
             {
                 if (string.IsNullOrWhiteSpace(title.Text))
                 {
-                    MessageBox.Show("Bitte geben Sie einen Titel für das Deck ein.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show(
+                        "Bitte geben Sie einen Titel für das Deck ein.",
+                        "Fehler",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Error
+                    );
                     return;
                 }
 
@@ -159,8 +184,18 @@ namespace FlashCards
 
                 using (HttpClient requestClient = new HttpClient())
                 {
-                    var responseData = await addDeck.AddDeck(requestClient, "addDeck", _user, hashedToken, sessionID, 
-                        removeHashtagColor.RemoveHashtagColor(FirstColor.ToString()), removeHashtagColor.RemoveHashtagColor(SecondColor.ToString()), title.Text, alt.Text, SelectedBenutzer);
+                    var responseData = await addDeck.AddDeck(
+                        requestClient,
+                        "addDeck",
+                        _user,
+                        hashedToken,
+                        sessionID,
+                        removeHashtagColor.RemoveHashtagColor(FirstColor.ToString()),
+                        removeHashtagColor.RemoveHashtagColor(SecondColor.ToString()),
+                        title.Text,
+                        alt.Text,
+                        SelectedBenutzer
+                    );
 
                     Console.WriteLine(responseData.toString());
                 }
@@ -171,11 +206,19 @@ namespace FlashCards
             }
         }
 
-        public static readonly DependencyProperty FirstColorProperty =
-            DependencyProperty.Register(nameof(FirstColor), typeof(Color), typeof(CreateDeck), new PropertyMetadata(Colors.BlueViolet));
+        public static readonly DependencyProperty FirstColorProperty = DependencyProperty.Register(
+            nameof(FirstColor),
+            typeof(Color),
+            typeof(CreateDeck),
+            new PropertyMetadata(Colors.BlueViolet)
+        );
 
-        public static readonly DependencyProperty SecondColorProperty =
-            DependencyProperty.Register(nameof(SecondColor), typeof(Color), typeof(CreateDeck), new PropertyMetadata(Colors.Red));
+        public static readonly DependencyProperty SecondColorProperty = DependencyProperty.Register(
+            nameof(SecondColor),
+            typeof(Color),
+            typeof(CreateDeck),
+            new PropertyMetadata(Colors.Red)
+        );
 
         public Color FirstColor
         {
@@ -219,7 +262,13 @@ namespace FlashCards
 
         private void goHome()
         {
-            var indexWindow = new Index(this.Left, this.Top, this.Width, this.Height, this.WindowState);
+            var indexWindow = new Index(
+                this.Left,
+                this.Top,
+                this.Width,
+                this.Height,
+                this.WindowState
+            );
             indexWindow.Show();
             this.Close();
         }
