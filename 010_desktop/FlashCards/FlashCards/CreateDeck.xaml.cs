@@ -197,7 +197,7 @@ namespace FlashCards
                         SelectedBenutzer
                     );
 
-                    Console.WriteLine(responseData.toString());
+                    goHome();
                 }
             }
             catch (Exception ex)
@@ -257,7 +257,6 @@ namespace FlashCards
         private void CreateDeckHomeButton_Click(object sender, RoutedEventArgs e)
         {
             createDeck();
-            goHome();
         }
 
         private void goHome()

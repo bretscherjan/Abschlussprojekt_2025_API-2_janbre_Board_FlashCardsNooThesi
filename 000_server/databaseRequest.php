@@ -225,6 +225,14 @@ if ($action === 'getData') {
             $result = getUsers($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, 'notFollowing', $fh);
             break;
 
+        case 'unfollow':
+            $result = unfollow($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $follow, $fh);
+            break;
+
+        case 'addFollow':
+            $result = addFollow($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $follow, $fh);
+            break;
+
         case 'deleteDeck':
             $result = deleteDeck($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $deckId, $fh);
             break;
@@ -234,13 +242,9 @@ if ($action === 'getData') {
             $endColor = '#' . $endColor;
             $result = addDeck($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $startColor, $endColor, $title, $alt, $collaborator, $fh);
             break;
-        
+
         case 'addCards':
             $result = addCards($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $deckId, $requestMessage, $fh);
-            break;
-        
-        case 'addFollow':
-            $result = addFollow($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $follow, $fh);
             break;
 
         case 'importCards':
@@ -752,6 +756,53 @@ function addFollow($mysql_host, $mysql_user, $mysql_password, $mysql_database, $
 
     // SQL-Abfrage vorbereiten
     $sql = "INSERT INTO follows (follower_id, followed_id) VALUES ((SELECT id FROM users WHERE username = ?), (SELECT id FROM users WHERE username = ?))";
+    $stmt = mysqli_prepare($dbh, $sql);
+    
+    if (!$stmt) {
+        $error = 'Fehler beim Vorbereiten der Abfrage: ' . mysqli_error($dbh);
+        mysqli_close($dbh);
+        return ['error' => $error];
+    }
+
+    // Parameter binden und ausführen
+    if (!mysqli_stmt_bind_param($stmt, "ss", $user, $follow) || !mysqli_stmt_execute($stmt)) {
+        $error = 'Fehler beim Ausführen der Abfrage: ' . mysqli_stmt_error($stmt);
+        mysqli_stmt_close($stmt);
+        mysqli_close($dbh);
+        return ['error' => $error];
+    }
+
+    // ID des eingefügten Datensatzes abrufen
+    $followId = mysqli_insert_id($dbh);
+    
+    // Statement und Verbindung schließen
+    mysqli_stmt_close($stmt);
+    mysqli_close($dbh);
+    
+    return ['success' => true, 'followId' => $followId];
+}
+
+
+//////////////////////////////////////////////////////////////////////
+// function unfollow
+//////////////////////////////////////////////////////////////////////
+
+function unfollow($mysql_host, $mysql_user, $mysql_password, $mysql_database, $user, $follow, $fh) {
+    // Datenbankverbindung herstellen
+    $dbh = createDatabaseConnection($mysql_host, $mysql_user, $mysql_password, $mysql_database, $fh);
+    
+    if (!$dbh) {
+        return ['error' => 'Fehler beim Herstellen der Datenbankverbindung'];
+    }
+
+    // Validierung der Eingabeparameter
+    if (empty($user) || empty($follow)) {
+        mysqli_close($dbh);
+        return ['error' => 'Benutzername oder Follower-ID fehlt'];
+    }
+
+    // SQL-Abfrage vorbereiten
+    $sql = "DELETE FROM follows WHERE follower_id = (SELECT id FROM users WHERE username = ?) AND followed_id = (SELECT id FROM users WHERE username = ?)";
     $stmt = mysqli_prepare($dbh, $sql);
     
     if (!$stmt) {

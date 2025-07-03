@@ -58,7 +58,21 @@
 
                     <StackPanel Margin="0,20,0,0">
                         <TextBlock Text="Following" Foreground="#dfaa30" FontSize="16" Margin="0,0,0,5"/>
-                        <ListBox ItemsSource="{Binding FollowingListe}" Background="#3a3a3a" Foreground="White" BorderBrush="#555" Height="100"/>
+                        <ListBox ItemsSource="{Binding FollowingListe}" Background="#3a3a3a" Foreground="White" BorderBrush="#555" Height="100">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}">
+                                        <TextBlock.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="Unfollow this user" Click="UnfollowUser_Click"
+                                                          Tag="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                          Cursor="Hand"/>
+                                            </ContextMenu>
+                                        </TextBlock.ContextMenu>
+                                    </TextBlock>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </StackPanel>
                 </StackPanel>
 
