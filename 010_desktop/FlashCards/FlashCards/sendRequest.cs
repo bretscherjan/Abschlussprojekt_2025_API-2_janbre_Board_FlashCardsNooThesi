@@ -47,7 +47,7 @@ namespace FlashCards
         /// <summary>
         /// Sends a request to add a follow relationship.
         /// </summary>
-        internal static async Task<dynamic> AddFollow(HttpClient client, string request, string user, string token, string sessionID, string following)
+        internal static async Task<dynamic> Follow(HttpClient client, string request, string user, string token, string sessionID, string following)
         {
             var response = await client.GetStringAsync(
                 $"{baseUrl}?action=getData&request={request}&user={user}&token={token}&sessionID={sessionID}&follow={following}");

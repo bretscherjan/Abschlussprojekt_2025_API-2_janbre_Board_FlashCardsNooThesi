@@ -321,7 +321,41 @@ namespace FlashCards
 
                 using (HttpClient requestClient = new HttpClient())
                 {
-                    var responseData = await sendRequest.AddFollow(requestClient, "addFollow", _OldUser, hashedToken, sessionID, SelectedBenutzer);
+                    var responseData = await sendRequest.Follow(requestClient, "addFollow", _OldUser, hashedToken, sessionID, SelectedBenutzer);
+
+                    getNotFollowing();
+                    getFollowers();
+                    getFollowing();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Delete a follow relationship to another user.
+        /// </summary>
+        private async void unfollow(string benutzer)
+        {
+            try
+            {
+
+                using (HttpClient tokenClient = new HttpClient())
+                {
+                    var responseToken = await getToken.GetTokenAsync(tokenClient);
+                    token = responseToken.token;
+                    sessionID = responseToken.sessionID;
+                    Console.WriteLine($"Token: {token} \nSessionId: {sessionID}");
+                }
+
+                hashedToken = generateHash.GenerateSHA256Hash(token, _salt, _OldPassword);
+                Console.WriteLine($"Hashed Token + baseCode + password: {hashedToken}");
+
+                using (HttpClient requestClient = new HttpClient())
+                {
+                    var responseData = await sendRequest.Follow(requestClient, "unfollow", _OldUser, hashedToken, sessionID, benutzer);
 
                     getNotFollowing();
                     getFollowers();
@@ -409,6 +443,19 @@ namespace FlashCards
             addFollow();
         }
 
+        private void UnfollowUser_Click(object sender, RoutedEventArgs e)
+        {
+            var menuItem = sender as MenuItem;
+            var benutzername = menuItem?.Tag?.ToString();
+
+            if (!string.IsNullOrEmpty(benutzername))
+            {
+                unfollow(benutzername);
+
+            }
+
+        }
+
         /// <summary>
         /// Deletes the current user account from the backend.
         /// </summary>
@@ -424,12 +471,12 @@ namespace FlashCards
                     Console.WriteLine($"Token: {token} \nSessionId: {sessionID}");
                 }
 
-                hashedToken = generateHash.GenerateSHA256Hash(token, _salt, _password);
+                hashedToken = generateHash.GenerateSHA256Hash(token, _salt, _OldPassword);
                 Console.WriteLine($"Hashed Token + baseCode + password: {hashedToken}");
 
                 using (HttpClient requestClient = new HttpClient())
                 {
-                    var responseData = await sendRequest.DeleteUser(requestClient, "deleteUser", _user, hashedToken, sessionID);
+                    var responseData = await sendRequest.DeleteUser(requestClient, "deleteUser", _OldUser, hashedToken, sessionID);
 
                     Console.WriteLine(responseData.toString());
                 }
@@ -439,7 +486,6 @@ namespace FlashCards
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
-
 
 
         private void DeleteAccountButton_Click(object sender, RoutedEventArgs e)
