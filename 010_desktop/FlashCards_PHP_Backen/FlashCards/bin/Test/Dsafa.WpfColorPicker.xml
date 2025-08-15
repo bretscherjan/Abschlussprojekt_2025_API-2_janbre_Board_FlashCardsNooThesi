@@ -1,0 +1,236 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Dsafa.WpfColorPicker</name>
+    </assembly>
+    <members>
+        <member name="M:Dsafa.WpfColorPicker.ColorHelper.FromHSV(System.Double,System.Double,System.Double)">
+            <summary>
+            Creates a color from HSV / HSB values.
+            </summary>
+            <param name="h">Hue, [0 - 360]</param>
+            <param name="s">Saturation, [0, 1]</param>
+            <param name="v">Value, [0, 1]</param>
+            <returns>The color created from hsv values.</returns>
+            <remarks>Algorithm from https://en.wikipedia.org/wiki/HSL_and_HSV #From Hsv</remarks>
+        </member>
+        <member name="T:Dsafa.WpfColorPicker.ColorPicker">
+            <summary>
+            User control that contains a color picker.
+            </summary>
+            <summary>
+            ColorPicker
+            </summary>
+        </member>
+        <member name="M:Dsafa.WpfColorPicker.ColorPicker.#ctor">
+            <summary>
+            Creates an instance of the color picker.
+            </summary>
+        </member>
+        <member name="P:Dsafa.WpfColorPicker.ColorPicker.Color">
+            <summary>
+            Gets or sets the currently selected color.
+            </summary>
+        </member>
+        <member name="M:Dsafa.WpfColorPicker.ColorPicker.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Dsafa.WpfColorPicker.ColorPickerDialog">
+            <summary>
+            Window that contains a <see cref="T:Dsafa.WpfColorPicker.ColorPicker"/> and a color palette.
+            </summary>
+            <summary>
+            ColorPickerDialog
+            </summary>
+        </member>
+        <member name="M:Dsafa.WpfColorPicker.ColorPickerDialog.#ctor">
+            <summary>
+            Creates an instance of the <see cref="T:Dsafa.WpfColorPicker.ColorPickerDialog"/> class
+            with a default color and default color palette.
+            </summary>
+        </member>
+        <member name="M:Dsafa.WpfColorPicker.ColorPickerDialog.#ctor(System.Windows.Media.Color)">
+            <summary>
+            Creates an instance of the <see cref="T:Dsafa.WpfColorPicker.ColorPickerDialog"/> class
+            with an initial <see cref="P:Dsafa.WpfColorPicker.ColorPickerDialog.Color"/> and a default color palette.
+            </summary>
+            <param name="color">The initial color.</param>
+        </member>
+        <member name="M:Dsafa.WpfColorPicker.ColorPickerDialog.#ctor(System.Windows.Media.Color,System.Collections.Generic.IEnumerable{System.Windows.Media.Color})">
+            <summary>
+            Creates an instanace of the <see cref="T:Dsafa.WpfColorPicker.ColorPickerDialog"/> class
+            with an initial <see cref="P:Dsafa.WpfColorPicker.ColorPickerDialog.Color"/> and a color palette.
+            </summary>
+            <param name="color">The initial color.</param>
+            <param name="palette">The color palette.</param>
+        </member>
+        <member name="P:Dsafa.WpfColorPicker.ColorPickerDialog.Color">
+            <summary>
+            Gets the selected color.
+            </summary>
+        </member>
+        <member name="P:Dsafa.WpfColorPicker.ColorPickerDialog.Palette">
+            <summary>
+            Gets the color palette.
+            </summary>
+        </member>
+        <member name="M:Dsafa.WpfColorPicker.ColorPickerDialog.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Dsafa.WpfColorPicker.Converters.HueToColorConverter">
+            <summary>
+            Converts hue [0 - 360] to color.
+            </summary>
+        </member>
+        <member name="T:Dsafa.WpfColorPicker.Converters.UnitToPercentConverter">
+            <summary>
+            Converts from range [0 - 1] to percent
+            </summary>
+        </member>
+        <member name="M:Dsafa.WpfColorPicker.Extensions.GetColorAtOffset(System.Windows.Media.GradientStopCollection,System.Double)">
+            <summary>
+            Gets the color of a gradient stop collection with the given index
+            </summary>
+            <param name="collection">Colletion of colors</param>
+            <param name="offset">The offset</param>
+            <returns>The color at the offset</returns>
+        </member>
+        <member name="M:Dsafa.WpfColorPicker.Extensions.GetHue(System.Windows.Media.Color)">
+            <summary>
+            Gets hue in hsb model.
+            </summary>
+            <param name="color">The color.</param>
+            <returns>The hue of the color from [0, 360]</returns>
+        </member>
+        <member name="M:Dsafa.WpfColorPicker.Extensions.GetBrightness(System.Windows.Media.Color)">
+            <summary>
+            Gets the brightness in hsb model.
+            </summary>
+            <param name="color">The color.</param>
+            <returns>The brightness of the color from [0, 1]</returns>
+        </member>
+        <member name="M:Dsafa.WpfColorPicker.Extensions.GetSaturation(System.Windows.Media.Color)">
+            <summary>
+            Gets the saturation in hsb model.
+            </summary>
+            <param name="color">The color</param>
+            <returns>The saturation of the color from [0, 1]</returns>
+        </member>
+        <member name="M:Dsafa.WpfColorPicker.Extensions.Clamp(System.Windows.Point,System.Windows.FrameworkElement)">
+            <summary>
+            Clamps the point to the inside of the element
+            </summary>
+            <param name="p">The point</param>
+            <param name="element">The element</param>
+            <returns>A point inside the element</returns>
+        </member>
+        <member name="T:Dsafa.WpfColorPicker.EyeDropper">
+            <summary>
+            Interaction logic for EyeDropper.xaml
+            </summary>
+            <summary>
+            EyeDropper
+            </summary>
+        </member>
+        <member name="M:Dsafa.WpfColorPicker.EyeDropper.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Dsafa.WpfColorPicker.EyeDropperWindow">
+            <summary>
+            Interaction logic for EyeDropperWindow.xaml
+            </summary>
+        </member>
+        <member name="M:Dsafa.WpfColorPicker.EyeDropperWindow.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Dsafa.WpfColorPicker.HuePicker">
+            <summary>
+            Interaction logic for HuePicker.xaml
+            </summary>
+        </member>
+        <member name="M:Dsafa.WpfColorPicker.HuePicker.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Dsafa.WpfColorPicker.ColorNumericInput">
+            <summary>
+            Interaction logic for NumericInput.xaml
+            </summary>
+        </member>
+        <member name="M:Dsafa.WpfColorPicker.ColorNumericInput.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="M:Dsafa.WpfColorPicker.SaturationBrightnessPicker.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:Dsafa.WpfColorPicker.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Dsafa.WpfColorPicker.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Dsafa.WpfColorPicker.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="T:Dsafa.WpfColorPicker.TransparencyPicker">
+            <summary>
+            Interaction logic for TransparencyPicker.xaml
+            </summary>
+        </member>
+        <member name="M:Dsafa.WpfColorPicker.TransparencyPicker.InitializeComponent">
+            <summary>
+            InitializeComponent
+            </summary>
+        </member>
+        <member name="T:XamlGeneratedNamespace.GeneratedInternalTypeHelper">
+            <summary>
+            GeneratedInternalTypeHelper
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateInstance(System.Type,System.Globalization.CultureInfo)">
+            <summary>
+            CreateInstance
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.GetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            GetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.SetPropertyValue(System.Reflection.PropertyInfo,System.Object,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            SetPropertyValue
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.CreateDelegate(System.Type,System.Object,System.String)">
+            <summary>
+            CreateDelegate
+            </summary>
+        </member>
+        <member name="M:XamlGeneratedNamespace.GeneratedInternalTypeHelper.AddEventHandler(System.Reflection.EventInfo,System.Object,System.Delegate)">
+            <summary>
+            AddEventHandler
+            </summary>
+        </member>
+    </members>
+</doc>
