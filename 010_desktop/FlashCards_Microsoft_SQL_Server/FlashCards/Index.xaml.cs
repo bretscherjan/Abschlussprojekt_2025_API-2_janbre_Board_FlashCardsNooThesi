@@ -220,7 +220,7 @@ namespace FlashCards
             this.Close();
         }
 
-        /*private void EditDeck_Click(object sender, RoutedEventArgs e)
+        private void EditDeck_Click(object sender, RoutedEventArgs e)
         {
             var menuItem = sender as MenuItem;
             var deckId = menuItem?.Tag?.ToString();
@@ -230,6 +230,6 @@ namespace FlashCards
                 editDeckWindow.Show();
                 this.Close();
             }
-        }*/
+        }
     }
 }

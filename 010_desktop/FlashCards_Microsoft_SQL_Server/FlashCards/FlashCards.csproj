@@ -138,14 +138,19 @@
     <Compile Include="db\CreateDeck.cs" />
     <Compile Include="db\DeleteDeck.cs" />
     <Compile Include="db\DeleteUser.cs" />
+    <Compile Include="db\EditDeck.cs" />
     <Compile Include="db\Follows.cs" />
     <Compile Include="db\GetCards.cs" />
+    <Compile Include="db\GetDeck.cs" />
     <Compile Include="db\GetDecks.cs" />
     <Compile Include="db\GetUserData.cs" />
     <Compile Include="db\HandleLogin.cs" />
     <Compile Include="db\HandleRegistration.cs" />
     <Compile Include="db\UpdateCardFavourite.cs" />
     <Compile Include="db\UpdateUser.cs" />
+    <Compile Include="EditDeck.xaml.cs">
+      <DependentUpon>EditDeck.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FileImpExp.xaml.cs">
       <DependentUpon>FileImpExp.xaml</DependentUpon>
     </Compile>
@@ -180,6 +185,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="CreateDeck.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditDeck.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

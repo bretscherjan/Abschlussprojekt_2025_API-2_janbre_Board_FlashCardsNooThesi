@@ -190,4 +190,6 @@ C:\Users\Bretscher\source\repos\04 Datenbankzugriff\Abschlussprojekt_2025_API-2_
 C:\Users\Bretscher\source\repos\04 Datenbankzugriff\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards_Microsoft_SQL_Server\FlashCards\obj\Debug\FlashCards.csproj.GenerateResource.cache
 C:\Users\Bretscher\source\repos\04 Datenbankzugriff\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards_Microsoft_SQL_Server\FlashCards\obj\Debug\FlashCards.csproj.CoreCompileInputs.cache
 C:\Users\Bretscher\source\repos\04 Datenbankzugriff\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards_Microsoft_SQL_Server\FlashCards\obj\Debug\FlashCards.csproj.Up2Date
+C:\Users\Bretscher\source\repos\04 Datenbankzugriff\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards_Microsoft_SQL_Server\FlashCards\obj\Debug\EditDeck.g.cs
+C:\Users\Bretscher\source\repos\04 Datenbankzugriff\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards_Microsoft_SQL_Server\FlashCards\obj\Debug\EditDeck.baml
 C:\Users\Bretscher\source\repos\04 Datenbankzugriff\Abschlussprojekt_2025_API-2_janbre_Board_FlashCardsNooThesi\010_desktop\FlashCards_Microsoft_SQL_Server\FlashCards\obj\Debug\FlashCards.exe.config

@@ -47,7 +47,6 @@ namespace FlashCards
         private string _password;
         private string _user;
 
-        private readonly HttpClient _httpClient;
 
         private string _username;
         private string _email;
@@ -133,8 +132,6 @@ namespace FlashCards
             this.Width = width;
             this.Height = height;
             this.WindowState = state;
-
-            _httpClient = new HttpClient();
 
             getNotFollowing();
             getFollowers();

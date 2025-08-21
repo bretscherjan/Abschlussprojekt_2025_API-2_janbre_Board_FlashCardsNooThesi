@@ -14,7 +14,6 @@ namespace FlashCards.db
 
         public static bool UpdateuserInDB(string user, string email, string password, string olduser)
         {
-            Console.WriteLine($"Register new user: {user}");
 
             string updateUserQuery = $"UPDATE users SET username = @username, email = @email, password = @password WHERE username = @olduser";
 

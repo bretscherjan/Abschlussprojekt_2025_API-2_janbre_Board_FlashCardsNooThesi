@@ -11,7 +11,7 @@
         <DataTemplate DataType="{x:Type local:Card}">
             <Border Background="#1f1f1f" CornerRadius="8" Padding="10" Margin="0,0,0,20">
                 <StackPanel>
-                    <TextBlock Text="Card" FontWeight="Bold" Foreground="LightGray" Margin="0,0,0,5" />
+                    <TextBlock Text="Card" FontWeight="Bold" Height="35" Foreground="LightGray" Margin="0,0,0,5" />
                     <TextBlock Text="Question" Foreground="#dfaa30" FontSize="16" Margin="0,0,0,8" />
                     <TextBox Text="{Binding Question, UpdateSourceTrigger=PropertyChanged}" Height="40" Padding="10" Background="#3a3a3a" Foreground="White" BorderBrush="#555" BorderThickness="1" VerticalContentAlignment="Center" FontSize="14" />
 
@@ -27,8 +27,8 @@
         <DataTemplate DataType="{x:Type local:QuizCard}">
             <Border Background="#1f1f1f" CornerRadius="8" Padding="10" Margin="0,0,0,20">
                 <StackPanel>
-                    <TextBlock Text="Quiz" FontWeight="Bold" Height="50" Foreground="LightGray" Margin="0,0,0,5" />
-                    <TextBlock Text="Quiz Question" Height="50" Foreground="#dfaa30" FontSize="16" Margin="0,0,0,8" />
+                    <TextBlock Text="Quiz" FontWeight="Bold" Height="35" Foreground="LightGray" Margin="0,0,0,5" />
+                    <TextBlock Text="Question" Foreground="#dfaa30" FontSize="16" Margin="0,0,0,8" />
                     <TextBox Text="{Binding Question, UpdateSourceTrigger=PropertyChanged}" Height="40" Padding="10" Background="#3a3a3a" Foreground="White" BorderBrush="#555" BorderThickness="1" VerticalContentAlignment="Center" FontSize="14" />
 
                     <TextBlock Text="Option 1" Foreground="#dfaa30" FontSize="16" Margin="0,0,0,8" />

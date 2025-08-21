@@ -192,12 +192,6 @@ namespace FlashCards
             FlashCards.db.AddCards.AddCardsToDB(json, _user, _deckId.ToString(), "addCards");
 
 
-            MessageBox.Show(
-                "Cards saved successfully!",
-                "Success",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information
-            );
         }
 
         private void CreateCardButton_Click(object sender, RoutedEventArgs e)

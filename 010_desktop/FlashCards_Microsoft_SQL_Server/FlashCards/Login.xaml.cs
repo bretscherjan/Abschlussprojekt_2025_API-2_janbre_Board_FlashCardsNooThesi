@@ -7,22 +7,7 @@
  * Created: June 27, 2025
  * Version: 3.3
  */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using FlashCards.db;
 
 namespace FlashCards
@@ -55,8 +40,6 @@ namespace FlashCards
 
             if (_isLoggedIn)
             {
-                MessageBox.Show("Login successful!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-
                 var indexPage = new Index();
                 indexPage.Show();
                 this.Close();
@@ -83,8 +66,7 @@ namespace FlashCards
         /// </summary>
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            // _password = generateHash.GenerateSHA256Hash(password.Password);
-            _password = password.Password;
+            _password = GenerateHash.GenerateSHA256Hash(password.Password);
             _user = username.Text;
             verifyAccount();
         }

@@ -22,12 +22,9 @@ namespace FlashCards
         private string _user;
         // private string _salt = Properties.Settings.Default.salt;
 
-
-        private readonly HttpClient _httpClient;
         public Register()
         {
             InitializeComponent();
-            _httpClient = new HttpClient();
         }
 
         /// <summary>
@@ -63,8 +60,7 @@ namespace FlashCards
 
             if (first_pw.Password == second_pw.Password)
             {
-                // _password = generateHash.GenerateSHA256Hash(first_pw.Password);
-                _password = first_pw.Password;
+                _password = GenerateHash.GenerateSHA256Hash(first_pw.Password);
             }
             else
             {

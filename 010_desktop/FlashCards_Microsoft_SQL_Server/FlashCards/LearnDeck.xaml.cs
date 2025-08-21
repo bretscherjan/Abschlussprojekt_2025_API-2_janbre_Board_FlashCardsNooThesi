@@ -85,15 +85,7 @@ namespace FlashCards
         private async void LoadDataAndStartLearning()
         {
             await getCards();
-
-            if (filteredCards?.Count > 0)
-            {
-                LoadCurrentCard();
-            }
-            else
-            {
-                QuestionTextBlock.Text = "Keine Karten verfügbar";
-            }
+            LoadCurrentCard();
         }
 
         /// <summary>
@@ -116,7 +108,14 @@ namespace FlashCards
         private void LoadCurrentCard()
         {
             if (filteredCards == null || filteredCards.Count == 0)
+            {
+                QuestionTextBlock.Text = "Keine Karten verfügbar";
+                QuizOptionsPanel.Visibility = Visibility.Collapsed;
+                AnswerInputPanel.Visibility = Visibility.Collapsed;
+                ProgressTextBlock.Text = "0 / 0";
+
                 return;
+            }
 
             QuestionTextBlock.Text = currentCard.question;
 

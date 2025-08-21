@@ -68,6 +68,11 @@
                         Background="#3b3b3b" Foreground="#e0e0e0" FontSize="14"
                         Click="QuizOptionButton_Click"/>
             </StackPanel>
+
+            <!-- Antwort-Eingabe für normale Karten -->
+            <StackPanel x:Name="NoCardsLoaded" Grid.Row="2" Orientation="Vertical" Margin="0,0,0,20"/>
+
+
         </Grid>
 
         <!-- Back Button -->
