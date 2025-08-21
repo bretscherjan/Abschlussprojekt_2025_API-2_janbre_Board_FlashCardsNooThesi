@@ -81,12 +81,21 @@ namespace FlashCards
 
         
         /// <summary>
-        /// Deletes a deck by its ID.
+        /// Löscht ein Deck anhand seiner ID.
         /// </summary>
-        private void deleteDeck(string _deckId)
+        private async void deleteDeck(string _deckId)
         {
+            bool isHost = await GetDeck.IsHost(_user, _deckId);
 
-            DeleteDeck.DeleteDeckFromDB(_deckId);
+            if (isHost)
+            {
+                DeleteDeck.DeleteDeckFromDB(_deckId);
+            }
+            else
+            {
+                MessageBox.Show("Sie sind nicht der Host dieses Decks und können es daher nicht löschen.", "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
         }
         
 

@@ -54,10 +54,7 @@ BEGIN
                     dc.start_color, dc.end_color;
 END";
             string isAdmin = @"
-                SELECT collaborators.* 
-                FROM collaborators
-                JOIN decks ON collaborators.deck_id = decks.id
-                WHERE collaborators.deck_id = @deckId AND decks.creator_id = (SELECT id FROM users WHERE username = @username);";
+                SELECT * FROM decks WHERE id = @deckId AND creator_id = (SELECT id FROM users WHERE username = @username);";
 
             var decks = new List<object>();
 
@@ -120,6 +117,122 @@ END";
             }
 
             return JsonConvert.SerializeObject(decks);
+        }
+
+        public static async Task<string> GetCollaborators(int deckId)
+        {
+
+            string getQuery = @"SELECT u.username FROM users as u JOIN collaborators AS c ON u.id = c.user_id WHERE c.deck_id = @deckId;";
+
+            var collaborators = new List<object>();
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                await connection.OpenAsync();
+
+                try
+                {
+                    using (SqlCommand getStmt = new SqlCommand(getQuery, connection))
+                    {
+                        getStmt.Parameters.AddWithValue("@deckId", deckId);
+
+                        using (SqlDataReader reader = await getStmt.ExecuteReaderAsync())
+                        {
+                            while (reader.Read())
+                            {
+                                var collaborator = new
+                                {
+                                    username = reader["username"] as string
+                                };
+
+                                collaborators.Add(collaborator);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Fehler beim Abrufen der Decks: {ex.Message}");
+                    return "[]";
+                }
+            }
+            return JsonConvert.SerializeObject(collaborators);
+        }
+
+
+        public static async Task<string> GetOwner(int deckId)
+        {
+
+            string getQuery = @"SELECT u.username FROM users as u JOIN decks AS d ON u.id = d.creator_id WHERE d.id = @deckId;";
+
+            var owner = new List<object>();
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                await connection.OpenAsync();
+
+                try
+                {
+                    using (SqlCommand getStmt = new SqlCommand(getQuery, connection))
+                    {
+                        getStmt.Parameters.AddWithValue("@deckId", deckId);
+
+                        using (SqlDataReader reader = await getStmt.ExecuteReaderAsync())
+                        {
+                            while (reader.Read())
+                            {
+                                var collaborator = new
+                                {
+                                    username = reader["username"] as string
+                                };
+
+                                owner.Add(collaborator);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Fehler beim Abrufen der Decks: {ex.Message}");
+                    return "[]";
+                }
+            }
+            return JsonConvert.SerializeObject(owner);
+        }
+
+
+
+        public static async Task<bool> IsHost(string user, string deckId)
+        {
+            bool isHost = false;
+
+            string isAdmin = @"
+                SELECT * FROM decks WHERE id = @deckId AND creator_id = (SELECT id FROM users WHERE username = @username);";
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                await connection.OpenAsync();
+                try 
+                {
+                    using (SqlCommand command = new SqlCommand(isAdmin, connection))
+                    {
+                        command.Parameters.AddWithValue("@deckId", deckId);
+                        command.Parameters.AddWithValue("@username", user);
+
+                        using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            isHost = reader.HasRows ? true : false;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Fehler beim Abrufen der Decks: {ex.Message}");
+                    return false;
+                }
+            }
+
+            return isHost;
         }
     }
 }

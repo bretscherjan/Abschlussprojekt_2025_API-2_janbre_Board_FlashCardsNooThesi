@@ -34,6 +34,11 @@ namespace FlashCards
         public bool isHost { get; set; }
     }
 
+    public class DeckCollaborator
+    {
+        public string username { get; set; }
+    }
+
     /// <summary>
     /// Interaktionslogik für EditDeck.xaml
     /// </summary>
@@ -41,6 +46,30 @@ namespace FlashCards
     {
         private string _user = Properties.Settings.Default.username;
         private int _deckId;
+
+        private List<string> _collaboratorListe;
+
+        public List<string> CollaboratorListe
+        {
+            get => _collaboratorListe;
+            set
+            {
+                _collaboratorListe = value;
+                OnPropertyChanged(nameof(CollaboratorListe));
+            }
+        }
+
+        private List<string> _ownerListe;
+
+        public List<string> OwnerListe
+        {
+            get => _ownerListe;
+            set
+            {
+                _ownerListe = value;
+                OnPropertyChanged(nameof(OwnerListe));
+            }
+        }
     
         private List<string> _benutzerNamenListe;
 
@@ -101,6 +130,14 @@ namespace FlashCards
             }
         }
 
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count > 0)
+            {
+                SelectedBenutzer = e.AddedItems[0].ToString();
+            }
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
     
@@ -110,7 +147,10 @@ namespace FlashCards
         public EditDeck(double left, double top, double width, double height, WindowState state, int deckId)
         {
             InitializeComponent();
-    
+
+            _collaboratorListe = new List<string>();
+            _ownerListe = new List<string>();
+
             this.DataContext = this;
     
             this.Left = left;
@@ -122,6 +162,8 @@ namespace FlashCards
             _deckId = deckId;
 
             getDeck();
+            getCollaborators();
+            getOwner();
 
         }
     
@@ -168,7 +210,6 @@ namespace FlashCards
             {
                 BenutzerNamenListe = new List<string>();
                 BenutzerNamenListe.Add("You are not Admin of this deck");
-
             }
         }
 
@@ -194,7 +235,27 @@ namespace FlashCards
             goHome();
     
         }
-    
+
+        private async void getCollaborators()
+        {
+
+            var responseData = await FlashCards.db.GetDeck.GetCollaborators(_deckId);
+
+            List<UserCollaborator> allUsers = JsonConvert.DeserializeObject<List<UserCollaborator>>(responseData.ToString());
+            CollaboratorListe = allUsers.Select(u => u.username).ToList();
+
+        }
+
+        private async void getOwner()
+        {
+
+            var responseData = await FlashCards.db.GetDeck.GetOwner(_deckId);
+
+            List<UserCollaborator> allUsers = JsonConvert.DeserializeObject<List<UserCollaborator>>(responseData.ToString());
+            OwnerListe = allUsers.Select(u => u.username).ToList();
+
+        }
+
         public static readonly DependencyProperty FirstColorProperty =
             CreateDeck.FirstColorProperty.AddOwner(typeof(EditDeck));
 
@@ -258,12 +319,15 @@ namespace FlashCards
             goHome();
         }
 
+
         private void DeleteCollaboratorButton_Click(object sender, RoutedEventArgs e)
         {
 
+            var menuItem = sender as MenuItem;
+            var benutzername = menuItem?.Tag?.ToString();
             if (isHost)
             {
-                if (!FlashCards.db.EditDeck.DeleteCollaboratorsFromDeck(_deckId))
+                if (!FlashCards.db.EditDeck.DeleteCollaboratorsFromDeck(_deckId, SelectedBenutzer))
                 {
                     MessageBox.Show(
                         "Keine Mitarbeiter ausgewählt.",
@@ -274,6 +338,7 @@ namespace FlashCards
                 }
 
                 SelectedBenutzer = "";
+                goHome();
             }
             else
             {
@@ -286,5 +351,6 @@ namespace FlashCards
 
             }
         }
+
     }
 }

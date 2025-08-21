@@ -92,9 +92,33 @@
                             <StackPanel Grid.Row="5" Orientation="Vertical" Margin="0,20,0,0">
                                 <Button Cursor="Hand" Content="SAVE CHANGES" Background="#dfaa30" Foreground="#2f2f2f" FontSize="16" FontWeight="Bold" Height="50" Margin="0,0,0,10" BorderThickness="0" Click="CreateDeckHomeButton_Click">
                                 </Button>
-                                <ComboBox Style="{StaticResource YellowComboBoxStyle}" ItemsSource="{Binding BenutzerNamenListe}" SelectedItem="{Binding SelectedBenutzer, Mode=TwoWay}" />
-                                <Button Cursor="Hand" Content="DELETE ALL COLLABORATORS" Background="Transparent" Foreground="#a0a0a0" FontSize="14" Height="40" Margin="0,15,0,0" BorderThickness="0" Click="DeleteCollaboratorButton_Click">
-                                </Button>
+                                <ComboBox Style="{StaticResource YellowComboBoxStyle}" ItemsSource="{Binding BenutzerNamenListe}" SelectedItem="{Binding SelectedBenutzer, Mode=TwoWay}" SelectionChanged="ComboBox_SelectionChanged" />
+
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,0">
+                                    <StackPanel Margin="0,20,0,0">
+                                        <TextBlock Text="Owner" Foreground="#dfaa30" FontSize="16" Margin="0,0,0,5"/>
+                                        <ListBox ItemsSource="{Binding OwnerListe}" Background="#3a3a3a" Foreground="White" BorderBrush="#555" Height="100"/>
+                                    </StackPanel>
+                                    <StackPanel Margin="0,20,0,0">
+                                        <TextBlock Text="Collaborators" Foreground="#dfaa30" FontSize="16" Margin="0,0,0,5"/>
+                                        <ListBox ItemsSource="{Binding CollaboratorListe}" Background="#3a3a3a" Foreground="White" BorderBrush="#555" Height="100">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{Binding}">
+                                                        <TextBlock.ContextMenu>
+                                                            <ContextMenu>
+                                                                <MenuItem Header="Delete Collaborator" Click="DeleteCollaboratorButton_Click"
+                                                          Tag="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                                                          Cursor="Hand"/>
+                                                            </ContextMenu>
+                                                        </TextBlock.ContextMenu>
+                                                    </TextBlock>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    </StackPanel>
+                                </StackPanel>
+
                                 <Button Cursor="Hand" Content="CANCEL" Background="Transparent" Foreground="#a0a0a0" FontSize="14" Height="40" Margin="0,15,0,0" BorderThickness="0" Click="BackButton_Click">
                                 </Button>
                             </StackPanel>

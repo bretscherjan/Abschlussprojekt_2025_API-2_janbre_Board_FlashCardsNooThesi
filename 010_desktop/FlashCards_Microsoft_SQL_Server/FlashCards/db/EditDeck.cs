@@ -22,14 +22,8 @@ namespace FlashCards.db
             if (collaborator != "" && collaborator != "You are not Admin of this deck")
             {
                 collaboratorQuery = @"
-                    IF NOT EXISTS (SELECT 1 FROM collaborators WHERE deck_id = @deckId)
-                    BEGIN
-                        INSERT INTO collaborators (deck_id, user_id, can_edit) VALUES (@deckId, @collaboratorUser, @isPrivate);
-                    END
-                    ELSE
-                    BEGIN
-                        UPDATE collaborators SET user_id = (SELECT id FROM users WHERE username = @collaboratorUser) WHERE deck_id = @deckId;
-                    END";
+                        INSERT INTO collaborators (deck_id, user_id, can_edit)
+                        VALUES (@deckId, (SELECT id FROM users WHERE username = @collaboratorUser), @isPrivate);";
             }
 
             string updateUserQuery = @"
@@ -65,9 +59,9 @@ namespace FlashCards.db
             }
         }
 
-        public static bool DeleteCollaboratorsFromDeck(int deckId)
+        public static bool DeleteCollaboratorsFromDeck(int deckId, string collaboratorUser)
         {
-            string deleteQuery = "DELETE FROM collaborators WHERE deck_id = @deckId;";
+            string deleteQuery = "DELETE FROM collaborators WHERE deck_id = @deckId AND user_id = (SELECT id FROM users WHERE username = @collaboratorUsername);";
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 connection.Open();
@@ -76,6 +70,7 @@ namespace FlashCards.db
                     using (SqlCommand deleteStmt = new SqlCommand(deleteQuery, connection))
                     {
                         deleteStmt.Parameters.AddWithValue("@deckId", deckId);
+                        deleteStmt.Parameters.AddWithValue("@collaboratorUsername", collaboratorUser);
                         int rowsAffected = deleteStmt.ExecuteNonQuery();
                         return rowsAffected > 0;
                     }
@@ -94,7 +89,3 @@ namespace FlashCards.db
     }
 }
 
-
-////////////////////////////////////
-//// More than one collaobrator ////
-////////////////////////////////////
